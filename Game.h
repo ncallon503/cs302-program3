@@ -1,43 +1,69 @@
-/* In this program I decided to use a standard binary search tree as
-I think I will feel more comfortable implementing a red-black tree in
-python than in C++, most likely due to the difference in getters, setters,
-and the sheer amount of complexity using dynamic memory that C++ incorporates.
-I have a B*/
 #include <iostream>
 #include <cstring>
 #include <vector>
 #include <memory>
+#include <limits>
+#include <exception>
 
 using namespace std;
 
-class Game
+class RangeException : public exception
+{
+  virtual const char *what() const throw()
+  {
+    return "Invalid input. For the rating and difficulty please remember to enter an integer from 1 to 10.";
+  }
+};
+class Review // The review class is used to store reviews in a vector in the Game class
+{
+public:
+  Review();
+  Review(const Review &src);
+  Review &operator=(const Review &src);
+  ~Review();
+
+  friend istream &operator>>(istream &is, Review &src);
+  friend ostream &operator<<(ostream &os, const Review &src);
+
+  const bool getDifficulty() const; // Limiting use of getters, but we need these 2 for the sum functions
+  const bool getScore() const;
+
+private:
+  string description; // User description of the game
+  bool difficulty;    // User difficulty score of the game
+  bool score;         // User score of the game (enjoyment)
+};
+class Game // The abstract base class Game is used for the derived classes Board, Video, and Sport
 {
 public:
   Game();
-  Game(const Game &src);
-  Game &operator=(const Game &src);
-  virtual ~Game() = default;
+  Game(const Game &aGame);
+  Game &operator=(const Game &aGame);
+  virtual ~Game() = default; // Virtual destructor for derived classes to call their own destructors
 
-  bool displayName();               // Simply displays the name of the game
-  virtual bool displayDetail() = 0; // Displays the game in detail like stats and overview, etc
-  virtual bool writeReview() = 0;   // Writes a review prompting for user input which includes score and difficulty
+  virtual bool displayQuick() const = 0;  // Simply displays the name of the game (const qualified for ostream)
+  virtual bool displayDetail() const = 0; // Displays the game in detail like stats and overview, etc
+  bool writeReview();                     // Writes a review prompting for user input which includes score and difficulty, this is the same for all derived classes so it does not use virtual or dynamic binding
+
+  friend ostream &operator<<(ostream &os, const Game &src);
+  friend istream &operator>>(istream &is, Game &src);
 
 protected:
-  string name;               // Name of the game
-  string genre;              // Genre of the game
-  int score;                 // Score of 1-10 how good the game is based on reviews
-  int difficulty;            // Score of 1-10 on how difficult the game is
-  vector<string> reviews;    // Vector of user reviews (Description)
-  vector<int> revDifficulty; // Vector if ratings of the difficulty of the game
-  vector<int> revScore;      // Vector of ratings of how good the game is
+  double sumDifficulty(int index); // Helper function that sums difficulty of all reviews
+  double sumScore(int index);      // Helper function that sums score of all reviews
 
-  unique_ptr<Game> left;  // Unique pointer to left leaf
-  unique_ptr<Game> right; // Unique pointer to right leaf
+  bool update(); // Updates average difficulty and score after a review is added
+
+  string name;            // Name of the game
+  string genre;           // Genre of the game
+  double score;           // Score of 1-10 how good the game is based on reviews
+  double difficulty;      // Score of 1-10 on how difficult the game is
+  vector<Review> reviews; // Vector of reviews containing description, difficulty, and score
 
 private:
 };
 
-class Board : public Game
+class Board : public Game // Child of Game Class
 {
 public:
   Board();
@@ -45,49 +71,38 @@ public:
   Board &operator=(const Board &src);
   ~Board();
 
-  bool displayDetail();
-  bool writeReview();
+  bool displayQuick() const;
+  bool displayDetail() const;
+
+  friend ostream &operator<<(ostream &os, const Board &src);
 
 private:
 };
 
-class Video : public Game
-{
-public:
-  Video();
-  Video(const Video &src);
-  Video &operator=(const Video &src);
-  ~Video();
+// class Video : public Game // Child of Game Class
+// {
+// public:
+//   Video();
+//   Video(const Video &src);
+//   Video &operator=(const Video &src);
+//   ~Video();
 
-  bool displayDetail();
-  bool writeReview();
+//   bool displayDetail();
+//   bool writeReview();
 
-private:
-};
+// private:
+// };
 
-class Sport : public Game
-{
-public:
-  Sport();
-  Sport(const Sport &src);
-  Sport &operator=(const Sport &src);
-  ~Sport();
+// class Sport : public Game // Child of Game Class
+// {
+// public:
+//   Sport();
+//   Sport(const Sport &src);
+//   Sport &operator=(const Sport &src);
+//   ~Sport();
 
-  bool displayDetail();
-  bool writeReview();
+//   bool displayDetail();
+//   bool writeReview();
 
-private:
-};
-
-class Player
-{
-public:
-  Player();
-  Player(const Player &src);
-  Player &operator=(const Player &src);
-  ~Player();
-
-private:
-  int score;
-  int roundsPlayed;
-};
+// private:
+// };
