@@ -4,6 +4,7 @@
 #include <memory>
 #include <limits>
 #include <exception>
+#include <string>
 
 using namespace std;
 
@@ -25,13 +26,13 @@ public:
   friend istream &operator>>(istream &is, Review &src);
   friend ostream &operator<<(ostream &os, const Review &src);
 
-  const bool getDifficulty() const; // Limiting use of getters, but we need these 2 for the sum functions
-  const bool getScore() const;
+  const double getDifficulty() const; // Limiting use of getters, but we need these 2 for the sum functions
+  const double getScore() const;
 
 private:
   string description; // User description of the game
-  bool difficulty;    // User difficulty score of the game
-  bool score;         // User score of the game (enjoyment)
+  double difficulty;  // User difficulty score of the game
+  double score;       // User score of the game (enjoyment)
 };
 class Game // The abstract base class Game is used for the derived classes Board, Video, and Sport
 {

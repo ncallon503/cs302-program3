@@ -44,19 +44,15 @@ bool Game::writeReview()
     try
     {
         if (!(cin >> temp)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore rest of bad input
-            cerr << "Invalid input. For the rating and difficulty please remember to enter an integer from 1 to 10." << endl;
-            return writeReview(); // Recursively return until valid input is entered
-        }
+            throw RangeException();
     }
     catch (const exception &e)
     {
         cerr << e.what() << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore rest of bad input
-        return writeReview();                                // Recursively return until valid input is entered
+        cout << "Failing at !e thing";
+        return writeReview(); // Recursively return until valid input is entered
     }
     reviews.push_back(temp); // If passed through all of that, successfully adds review
     update();                // Updates the difficulty and score
@@ -179,28 +175,32 @@ ostream &operator<<(ostream &os, const Review &src)
 
 istream &operator>>(istream &is, Review &src)
 {
+    string difficulty = "", score = "";
     cout << "Enter a description: ";
     is >> src.description;
-    cout << "Enter a difficulty rating: ";
-    is >> src.difficulty;
-    if (src.difficulty < 1 || src.difficulty > 10) // Throws exception for difficulty and score if number is not in range
+    cout << "Enter a difficulty: ";
+    is >> difficulty;
+    if (stoi(difficulty) < 0 || stoi(difficulty) > 10) // Use this for safe conversions
     {
         throw RangeException();
     }
-    cout << "Enter a score rating: ";
-    is >> src.score;
-    if (src.score < 1 || src.score > 10)
+    src.difficulty = stoi(difficulty);
+    cout << "Enter a score: ";
+    is >> score;
+    if (stoi(score) < 0 || stoi(score) > 10)
     {
         throw RangeException();
     }
+    src.score = stoi(score);
     return is;
 }
 
-const bool Review::getDifficulty() const
+const double Review::getDifficulty() const
 {
     return difficulty;
 }
-const bool Review::getScore() const
+
+const double Review::getScore() const
 {
     return score;
 }

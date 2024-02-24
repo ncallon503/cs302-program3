@@ -6,4 +6,7 @@ int main()
     aBoardGame.writeReview();
     aBoardGame.writeReview();
     aBoardGame.displayDetail();
+
+    // Review temp;
+    // cin >> temp;
 }
