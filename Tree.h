@@ -19,10 +19,10 @@ public:
   ~Node();
 
   Game *getGame();
-  bool setLeft(unique_ptr<Node> src);
-  bool setRight(unique_ptr<Node> src);
-  unique_ptr<Node> getLeft();
-  unique_ptr<Node> getRight();
+  bool setLeft(Node *src);
+  bool setRight(Node *src);
+  Node *getLeft();
+  Node *getRight();
 
   friend ostream &operator<<(ostream &os, const Node &src);
   bool display();
@@ -31,6 +31,21 @@ private:
   unique_ptr<Game> game;
   unique_ptr<Node> left;
   unique_ptr<Node> right;
+};
+
+class Tree
+{
+public:
+  Tree();
+  Tree(const Tree &src);
+  Tree &operator=(const Tree &src);
+  ~Tree();
+
+  bool insert(Game *aGame);
+  bool remove(string name);
+  bool display();
+  bool displayDetail(string name);
+  bool displayQuick(string name);
 };
 
 #endif

@@ -32,16 +32,35 @@ Node::~Node()
 
 ostream &operator<<(ostream &os, const Node &src)
 {
-    os << src.game.get() << endl;
+    os << *src.game.get() << endl;
     return os;
 }
 
-// Game *getGame();
-// bool setLeft(unique_ptr<Node> src);
-// bool setRight(unique_ptr<Node> src);
-// unique_ptr<Node> getLeft();
-// unique_ptr<Node> getRight();
+Game *Node::getGame()
+{
+    return game.get();
+}
 
-// bool display();
+bool Node::setLeft(Node *src)
+{
+    left.reset(src);
+    return true;
+}
+
+bool Node::setRight(Node *src)
+{
+    right.reset(src);
+    return true;
+}
+
+Node *Node::getLeft()
+{
+    return left.get();
+}
+
+Node *Node::getRight()
+{
+    return right.get();
+}
 
 #endif

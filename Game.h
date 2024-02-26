@@ -1,3 +1,6 @@
+#ifndef _GAME_H_
+#define _GAME_H_
+
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -107,3 +110,5 @@ private:
 
 // private:
 // };
+
+#endif
