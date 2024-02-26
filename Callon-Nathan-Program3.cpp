@@ -23,6 +23,8 @@ int main()
     cout << "aNode->getRight(): \n";
     aNode->getRight()->getGame()->displayDetail();
 
+    delete aNode;
+
     // Review temp;
     // cin >> temp;
 }
