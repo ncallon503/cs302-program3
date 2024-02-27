@@ -57,7 +57,7 @@ private:
   bool displayQuick(Node *src);  // Helper for displayQuick
   bool displayDetail(Node *src); // Helper for displayDetail
 
-  bool removeAllHelper(Node *&src); // Helper for removeAll
+  bool removeAllHelper(Node *src); // Helper for removeAll
 
   Node *copyTree(Node *src); // Helper for copy constructor and assignment operator
 };

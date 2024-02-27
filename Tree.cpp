@@ -193,7 +193,7 @@ bool Tree::removeAll()
     return removeAllHelper(root);
 }
 
-bool Tree::removeAllHelper(Node *&src)
+bool Tree::removeAllHelper(Node *src)
 {
     if (src == nullptr)
     {
@@ -204,7 +204,6 @@ bool Tree::removeAllHelper(Node *&src)
     if (src->getRight())
         removeAllHelper(src->getRight());
     delete src;
-    src = nullptr;
     return true;
 }
 
