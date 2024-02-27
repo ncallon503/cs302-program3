@@ -97,7 +97,7 @@ public:
 
   friend ostream &operator<<(ostream &os, const Board &src);
 
-  Game *clone() const;
+  Game *clone() const; // Clone used for nodes and unique_ptr not sharing same memory
 
 private:
 };
