@@ -29,7 +29,7 @@ public:
   bool display();
 
 private:
-  unique_ptr<Game> game;
+  shared_ptr<Game> game;
   Node *left;
   Node *right;
 };

@@ -36,7 +36,7 @@ Node &Node::operator=(const Node &src)
     return *this;
 }
 
-Node::~Node() {} // Unique_ptr so we need not deallocate anything
+Node::~Node() {} // Smart_ptr so we need not deallocate anything
 
 ostream &operator<<(ostream &os, const Node &src)
 {
@@ -130,7 +130,7 @@ bool Tree::insertHelper(Node *src, Node *parent, Game *aGame)
             return insertHelper(src->getLeft(), src, aGame);
         }
     }
-    else if (aGame > src->getGame())
+    else if (*aGame > *src->getGame())
     {
         cout << "Right case happened\n";
         if (src->getRight() == nullptr)
@@ -143,7 +143,7 @@ bool Tree::insertHelper(Node *src, Node *parent, Game *aGame)
             return insertHelper(src->getRight(), src, aGame);
         }
     }
-    else if (aGame == src->getGame()) // If the names are the same, we cannot insert
+    else if (*aGame == *src->getGame()) // If the names are the same, we cannot insert
     {
         cout << "aGame is == to getGame\n";
         cout << "Cannot insert a game of a duplicate name of a pre-existing game.\n";
