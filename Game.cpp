@@ -150,6 +150,11 @@ bool Game::update()
     return true;
 }
 
+const string Game::getName() const
+{
+    return name; // A necessary getter for the removeHelper function, we use the operators otherwise
+}
+
 // End Parent Class
 
 // -----------------
@@ -192,6 +197,11 @@ bool Board::displayDetail() const
         cout << reviews[i];
     }
     return true;
+}
+
+Game *Board::clone() const
+{
+    return new Board(*this); // Returns a new Board object with the same data
 }
 
 // End Board Class

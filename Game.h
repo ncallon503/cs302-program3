@@ -65,6 +65,10 @@ public:
   bool operator<=(const string name); // Same as above but for Game objects
   bool operator<=(const Game &op2);   // Game object version ^
 
+  const string getName() const; // Getter for name, only one that is needed, for recursion in the removeHelper Tree function
+
+  virtual Game *clone() const = 0; // I made a clone method for the node constructors to use their own memory
+
 protected:
   double sumDifficulty(int index); // Helper function that sums difficulty of all reviews
   double sumScore(int index);      // Helper function that sums score of all reviews
@@ -92,6 +96,8 @@ public:
   bool displayDetail() const;
 
   friend ostream &operator<<(ostream &os, const Board &src);
+
+  Game *clone() const;
 
 private:
 };

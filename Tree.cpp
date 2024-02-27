@@ -6,14 +6,21 @@ Node::Node() : game(nullptr), left(nullptr), right(nullptr){};
 
 Node::Node(const Node &src)
 {
-    game.reset(src.game.get());
+    game.reset(src.game.get()->clone());
     left = nullptr;
     right = nullptr;
 }
 
 Node::Node(Game *aGame)
 {
-    game.reset(aGame); // We only set the game pointer because we are creating a new node and don't want the memory to point to other places
+    if (aGame != nullptr)
+    {
+        game.reset(aGame->clone());
+    }
+    else
+    {
+        game.reset();
+    }
     left = nullptr;
     right = nullptr;
 }
@@ -43,6 +50,12 @@ Game *Node::getGame() const
     return game.get();
 }
 
+bool Node::setGame(Game *aGame)
+{
+    game.reset(aGame->clone());
+    return true;
+}
+
 bool Node::setLeft(Node *src)
 {
     left = src;
@@ -55,12 +68,12 @@ bool Node::setRight(Node *src)
     return true;
 }
 
-Node *Node::getLeft()
+Node *&Node::getLeft()
 {
     return left;
 }
 
-Node *Node::getRight()
+Node *&Node::getRight()
 {
     return right;
 }
@@ -151,7 +164,45 @@ bool Tree::remove(const string name)
 
 bool Tree::removeHelper(Node *&src, const string name)
 {
-    return true;
+    if (!src)
+        return false; // Base case, could not find node with name to remove
+
+    if (*src->getGame() > name) // If the name is later in the alphabet, go left
+    {
+        return removeHelper(src->getLeft(), name);
+    }
+    else if (*src->getGame() < name) // If the name is earlier in the alphabet, go right
+    {
+        return removeHelper(src->getRight(), name);
+    }
+    else
+    { // This means the name was
+        // Case 1 & 2: No child or one child
+        if (!src->getLeft() || !src->getRight()) //
+        {
+            Node *temp = src->getLeft() ? src->getLeft() : src->getRight(); // If left exists set temp to left, otherwise set temp to right
+            if (temp)
+            { // One leaf case, this essentially scoops it up and replaces src with the child
+                Node *tempToDelete = src;
+                src = temp;
+                delete tempToDelete;
+            }
+            else // If temp is nullptr, then no leaves, we can simply delete it
+            {
+                delete src;
+                src = nullptr;
+            }
+        }
+        else
+        { // Case 3: Two children
+            // Find inorder successor (smallest in the right subtree)
+            Node *temp = goLeftMost(src->getRight());                  // This recursively traverses left to get the leftmost node of the right subtree
+            src->setGame(temp->getGame());                             // Replace this nodes content with inorder successor
+            removeHelper(src->getRight(), temp->getGame()->getName()); // This removes the inorder successor
+        }
+        return true; // Node removed successfully
+    }
+    return false; // Node not found
 }
 
 bool Tree::displayQuick()
@@ -219,6 +270,15 @@ Node *Tree::copyTree(Node *src)
     temp->setLeft(copyTree(src->getLeft())); // We use the setters and the Node * return type to recursively set left and right until the final case of nullptr, and because we are not using return in front of these, the final line will still execute and return the node to be set
     temp->setRight(copyTree(src->getRight()));
     return temp;
+}
+
+Node *Tree::goLeftMost(Node *src)
+{
+    if (src->getLeft() == nullptr)
+    {
+        return src;
+    }
+    return goLeftMost(src->getLeft());
 }
 
 #endif

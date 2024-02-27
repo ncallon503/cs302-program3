@@ -18,9 +18,10 @@ public:
   Node &operator=(const Node &src);
   ~Node();
 
-  Game *getGame() const; // We set the getters to const for the copy constructor and assignment operator
-  Node *getLeft();
-  Node *getRight();
+  Game *getGame() const; // We set the getter to const for the copy constructor and assignment operator
+  Node *&getLeft();
+  Node *&getRight();
+  bool setGame(Game *aGame); // We don't use this really, except for with the inorder successor in the removeHelper function
   bool setLeft(Node *src);
   bool setRight(Node *src);
 
@@ -52,7 +53,7 @@ private:
 
   bool insertHelper(Node *src, Node *parent, Game *aGame); // Helper function for insert
   bool removeHelper(Node *&src, const string name);        // Helper function for remove
-  Node *&goLeftMost(Node *&src);                           // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
+  Node *goLeftMost(Node *src);                             // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
 
   bool displayQuick(Node *src);  // Helper for displayQuick
   bool displayDetail(Node *src); // Helper for displayDetail
