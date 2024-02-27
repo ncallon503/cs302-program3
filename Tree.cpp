@@ -29,10 +29,7 @@ Node &Node::operator=(const Node &src)
     return *this;
 }
 
-Node::~Node()
-{
-    game.reset(); // Not entirely necessary but just good practice to reset nodes for deallocation
-}
+Node::~Node() {} // Unique_ptr so we need not deallocate anything
 
 ostream &operator<<(ostream &os, const Node &src)
 {
