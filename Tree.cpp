@@ -190,19 +190,23 @@ bool Tree::displayDetail(Node *src)
 
 bool Tree::removeAll()
 {
-    return removeAllHelper(root);
+    if (!root)
+        return false; // Return false if empty tree
+    bool retValue = removeAllHelper(root);
     root = nullptr;
+    return retValue; // Takes 3 steps because we are returning by boolean and want to keep the return value
 }
 
 bool Tree::removeAllHelper(Node *src)
 {
     if (src == nullptr)
     {
-        return;
+        return true;
     }
     removeAllHelper(src->getLeft());
     removeAllHelper(src->getRight());
     delete src;
+    return true;
 }
 
 Node *Tree::copyTree(Node *src)
