@@ -165,8 +165,10 @@ bool Tree::remove(const string name)
 bool Tree::removeHelper(Node *&src, const string name)
 {
     if (!src)
+    {
+        cout << "Could not find node to remove.\n";
         return false; // Base case, could not find node with name to remove
-
+    }
     if (*src->getGame() > name) // If the name is later in the alphabet, go left
     {
         return removeHelper(src->getLeft(), name);
@@ -175,17 +177,17 @@ bool Tree::removeHelper(Node *&src, const string name)
     {
         return removeHelper(src->getRight(), name);
     }
-    else
-    { // This means the name was
-        // Case 1 & 2: No child or one child
-        if (!src->getLeft() || !src->getRight()) //
+    else if (*src->getGame() == name) // If the name is the same, we have found the node to remove
+    {
+
+        if (!src->getLeft() || !src->getRight()) // Covers two cases, one leaf or no leaves
         {
             Node *temp = src->getLeft() ? src->getLeft() : src->getRight(); // If left exists set temp to left, otherwise set temp to right
             if (temp)
             { // One leaf case, this essentially scoops it up and replaces src with the child
-                Node *tempToDelete = src;
+                Node *toDelete = src;
                 src = temp;
-                delete tempToDelete;
+                delete toDelete;
             }
             else // If temp is nullptr, then no leaves, we can simply delete it
             {
@@ -193,16 +195,16 @@ bool Tree::removeHelper(Node *&src, const string name)
                 src = nullptr;
             }
         }
-        else
-        { // Case 3: Two children
+        else // Covers case of two children
+        {
             // Find inorder successor (smallest in the right subtree)
-            Node *temp = goLeftMost(src->getRight());                  // This recursively traverses left to get the leftmost node of the right subtree
-            src->setGame(temp->getGame());                             // Replace this nodes content with inorder successor
-            removeHelper(src->getRight(), temp->getGame()->getName()); // This removes the inorder successor
+            Node *leftMost = goLeftMost(src->getRight());                  // This recursively traverses left to get the leftmost node of the right subtree
+            src->setGame(leftMost->getGame());                             // Replace this nodes content with inorder successor
+            removeHelper(src->getRight(), leftMost->getGame()->getName()); // This removes the inorder successor (leftMost) from the right subtree
         }
         return true; // Node removed successfully
     }
-    return false; // Node not found
+    return false;
 }
 
 bool Tree::displayQuick()

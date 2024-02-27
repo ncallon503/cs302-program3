@@ -11,6 +11,9 @@ int main()
     Board aBoard2;
     cin >> aBoard2;
 
+    Board aBoard3;
+    cin >> aBoard3;
+
     // cout << "aBoard < aBoard2:" << (aBoard < aBoard2) << "\n";
     // cout << "aBoard <= aBoard2:" << (aBoard <= aBoard2) << "\n";
     // cout << "aBoard > aBoard2:" << (aBoard > aBoard2) << "\n";
@@ -30,11 +33,15 @@ int main()
 
     aTree.insert(&aBoard);
     aTree.insert(&aBoard2);
+    aTree.insert(&aBoard3);
 
-    aTree.displayDetail();
     aTree.displayQuick();
 
-    aTree.removeAll();
+    cout << "Removing removeMe:\n";
+    aTree.remove("removeMe");
+
+    cout << "Displaying after removeMe:\n";
+    aTree.displayQuick();
 
     // Board aBoardGame;
     // aBoardGame.writeReview();
