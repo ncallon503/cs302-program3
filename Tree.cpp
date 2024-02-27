@@ -7,11 +7,15 @@ Node::Node() : game(nullptr), left(nullptr), right(nullptr){};
 Node::Node(const Node &src)
 {
     game.reset(src.game.get());
+    left = nullptr;
+    right = nullptr;
 }
 
 Node::Node(Game *aGame)
 {
     game.reset(aGame); // We only set the game pointer because we are creating a new node and don't want the memory to point to other places
+    left = nullptr;
+    right = nullptr;
 }
 
 Node &Node::operator=(const Node &src)
@@ -19,6 +23,8 @@ Node &Node::operator=(const Node &src)
     if (this != &src)
     {
         game.reset(src.game.get());
+        left = nullptr;
+        right = nullptr;
     }
     return *this;
 }
