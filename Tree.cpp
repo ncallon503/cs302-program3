@@ -199,8 +199,10 @@ bool Tree::removeAllHelper(Node *&src)
     {
         return false;
     }
-    removeAllHelper(src->getLeft());
-    removeAllHelper(src->getRight());
+    if (src->getLeft()) // We need to make sure not nullptr due to the reference *&
+        removeAllHelper(src->getLeft());
+    if (src->getRight())
+        removeAllHelper(src->getRight());
     delete src;
     src = nullptr;
     return true;
