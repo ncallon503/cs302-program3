@@ -191,20 +191,18 @@ bool Tree::displayDetail(Node *src)
 bool Tree::removeAll()
 {
     return removeAllHelper(root);
+    root = nullptr;
 }
 
 bool Tree::removeAllHelper(Node *src)
 {
     if (src == nullptr)
     {
-        return false;
+        return;
     }
-    if (src->getLeft()) // We need to make sure not nullptr due to the reference *&
-        removeAllHelper(src->getLeft());
-    if (src->getRight())
-        removeAllHelper(src->getRight());
+    removeAllHelper(src->getLeft());
+    removeAllHelper(src->getRight());
     delete src;
-    return true;
 }
 
 Node *Tree::copyTree(Node *src)
