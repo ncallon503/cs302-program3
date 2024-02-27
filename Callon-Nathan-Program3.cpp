@@ -34,6 +34,8 @@ int main()
     aTree.displayDetail();
     aTree.displayQuick();
 
+    aTree.removeAll();
+
     // Board aBoardGame;
     // aBoardGame.writeReview();
     // aBoardGame.writeReview();

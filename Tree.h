@@ -19,8 +19,8 @@ public:
   ~Node();
 
   Game *getGame() const; // We set the getters to const for the copy constructor and assignment operator
-  Node *&getLeft();
-  Node *&getRight();
+  Node *getLeft();
+  Node *getRight();
   bool setLeft(Node *src);
   bool setRight(Node *src);
 

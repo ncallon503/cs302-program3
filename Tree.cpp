@@ -55,12 +55,12 @@ bool Node::setRight(Node *src)
     return true;
 }
 
-Node *&Node::getLeft()
+Node *Node::getLeft()
 {
     return left;
 }
 
-Node *&Node::getRight()
+Node *Node::getRight()
 {
     return right;
 }
