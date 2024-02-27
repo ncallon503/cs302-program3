@@ -95,6 +95,47 @@ bool Tree::insert(Game *aGame)
     return insertHelper(root, nullptr, aGame);
 }
 
+bool Tree::insertHelper(Node *src, Node *parent, Game *aGame)
+{
+    if (src == nullptr) // Base case
+    {
+        src = new Node(aGame);
+        return true;
+    }
+    else if (*aGame < *src->getGame()) // Dereference both to use operator overloading to compare the names alphabetically
+    {
+        if (src->getLeft() == nullptr)
+        {
+            src->setLeft(new Node(aGame));
+            return true;
+        }
+        else
+        {
+            return insertHelper(src->getLeft(), src, aGame);
+        }
+    }
+    else if (aGame > src->getGame())
+    {
+        cout << "Right case happened\n";
+        if (src->getRight() == nullptr)
+        {
+            src->setRight(new Node(aGame));
+            return true;
+        }
+        else
+        {
+            return insertHelper(src->getRight(), src, aGame);
+        }
+    }
+    else if (aGame == src->getGame()) // If the names are the same, we cannot insert
+    {
+        cout << "aGame is == to getGame\n";
+        cout << "Cannot insert a game of a duplicate name of a pre-existing game.\n";
+        return false;
+    }
+    return false;
+}
+
 bool Tree::remove(const string name)
 {
     if (!root) // Empty tree
@@ -103,32 +144,6 @@ bool Tree::remove(const string name)
         return false;
     }
     return removeHelper(root, name);
-}
-
-bool Tree::insertHelper(Node *&src, Node *parent, Game *aGame)
-{
-    if (src == nullptr)
-    {
-        src = new Node(aGame);
-    }
-    if (*aGame >= *src->getGame()) // We dereference to use the overloaded operators to compare alphabetically
-    {
-        if (src->getRight() == nullptr) // Insertion case
-        {
-            src->setRight(new Node(aGame));
-            return true;
-        }
-        return insertHelper(src->getRight(), src, aGame);
-    }
-    else
-    {
-        if (src->getLeft() == nullptr) // Insertion case
-        {
-            src->setLeft(new Node(aGame));
-            return true;
-        }
-        return insertHelper(src->getLeft(), src, aGame);
-    }
 }
 
 bool Tree::removeHelper(Node *&src, const string name)

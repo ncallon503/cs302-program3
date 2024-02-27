@@ -6,12 +6,30 @@ int main()
     Tree aTree;
 
     Board aBoard;
+    cin >> aBoard;
 
-    for (int i = 0; i < 3; i++)
-    {
-        cin >> aBoard;
-        aTree.insert(&aBoard);
-    }
+    Board aBoard2;
+    cin >> aBoard2;
+
+    // cout << "aBoard < aBoard2:" << (aBoard < aBoard2) << "\n";
+    // cout << "aBoard <= aBoard2:" << (aBoard <= aBoard2) << "\n";
+    // cout << "aBoard > aBoard2:" << (aBoard > aBoard2) << "\n";
+    // cout << "aBoard >= aBoard2:" << (aBoard >= aBoard2) << "\n";
+    // cout << "aBoard == aBoard2:" << (aBoard == aBoard2) << "\n";
+    // cout << "aBoard != aBoard2:" << (aBoard != aBoard2) << "\n";
+
+    // Node aNode(&aBoard);
+    // Node aNode2(&aBoard2);
+
+    // cout << "aNode->getGame() < aNode2->getGame():" << (*aNode.getGame() < *aNode2.getGame()) << "\n";
+    // cout << "aNode->getGame() <= aNode2->getGame():" << (*aNode.getGame() <= *aNode2.getGame()) << "\n";
+    // cout << "aNode->getGame() > aNode2->getGame():" << (*aNode.getGame() > *aNode2.getGame()) << "\n";
+    // cout << "aNode->getGame() >= aNode2->getGame():" << (*aNode.getGame() >= *aNode2.getGame()) << "\n";
+    // cout << "aNode->getGame() == aNode2->getGame():" << (*aNode.getGame() == *aNode2.getGame()) << "\n";
+    // cout << "aNode->getGame() != aNode2->getGame():" << (*aNode.getGame() != *aNode2.getGame()) << "\n";
+
+    aTree.insert(&aBoard);
+    aTree.insert(&aBoard2);
 
     aTree.displayDetail();
     aTree.displayQuick();

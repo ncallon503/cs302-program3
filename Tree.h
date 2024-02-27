@@ -50,9 +50,9 @@ public:
 private:
   Node *root;
 
-  bool insertHelper(Node *&src, Node *parent, Game *aGame); // Helper function for insert
-  bool removeHelper(Node *&src, const string name);         // Helper function for remove
-  Node *&goLeftMost(Node *&src);                            // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
+  bool insertHelper(Node *src, Node *parent, Game *aGame); // Helper function for insert
+  bool removeHelper(Node *&src, const string name);        // Helper function for remove
+  Node *&goLeftMost(Node *&src);                           // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
 
   bool displayQuick(Node *src);  // Helper for displayQuick
   bool displayDetail(Node *src); // Helper for displayDetail
