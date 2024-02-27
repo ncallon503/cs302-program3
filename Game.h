@@ -49,8 +49,21 @@ public:
   virtual bool displayDetail() const = 0; // Displays the game in detail like stats and overview, etc
   bool writeReview();                     // Writes a review prompting for user input which includes score and difficulty, this is the same for all derived classes so it does not use virtual or dynamic binding
 
-  friend ostream &operator<<(ostream &os, const Game &src);
-  friend istream &operator>>(istream &is, Game &src);
+  friend ostream &operator<<(ostream &os, const Game &src); // The overloaded ostream operator displays the game simply and not in detail, so just its name and type of game
+  friend istream &operator>>(istream &is, Game &src);       // The overloaded istream operator prompts the user to enter details for the game and leave a review
+
+  bool operator==(const string name); // Compares the game's name to a string that is passed in
+  bool operator==(const Game &op2);   // Compares two games and returns true if same name
+  bool operator!=(const string name); // Same but inverse as above
+  bool operator!=(const Game &op2);   // ^^^
+  bool operator>(const string name);  // Compares alphabetically and returns true if later in alphabet
+  bool operator>(const Game &op2);    // Game object version ^
+  bool operator>=(const string name); // Same as above but for Game objects
+  bool operator>=(const Game &op2);   // Game object version ^
+  bool operator<(const string name);  // Compares alphabetically and returns true if earlier in alphabet
+  bool operator<(const Game &op2);    // Game object version ^
+  bool operator<=(const string name); // Same as above but for Game objects
+  bool operator<=(const Game &op2);   // Game object version ^
 
 protected:
   double sumDifficulty(int index); // Helper function that sums difficulty of all reviews

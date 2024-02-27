@@ -34,8 +34,68 @@ istream &operator>>(istream &is, Game &src)
     is >> src.genre;
     cout << "Enter the first review: ";
     src.writeReview();
-    src.update(); // Updates averages
+    src.update(); // Updates average ratings (right now this will only go off of one review)
     return is;
+}
+
+bool Game::operator==(const string name)
+{
+    return this->name == name; // Returns true if matching, false if not
+}
+
+bool Game::operator==(const Game &src)
+{
+    return name == src.name; // Returns true if matches other game's name, false if not
+}
+
+bool Game::operator!=(const string name)
+{
+    return this->name != name; // Returns true if not matching, false if matching
+}
+
+bool Game::operator!=(const Game &src)
+{
+    return name != src.name; // Returns true if does not match other game's name, false if it does
+}
+
+bool Game::operator>(const Game &src)
+{
+    return name[0] > src.name[0]; // Returns true if first character later in alphabet than src.name's first character, false if not
+}
+
+bool Game::operator>(const string name)
+{
+    return this->name[0] > name[0]; // Same as above but for a string passed in
+}
+
+bool Game::operator>=(const Game &src)
+{
+    return name[0] >= src.name[0]; // Returns true if first character later or equal to src.name's first character, false if not
+}
+
+bool Game::operator>=(const string name)
+{
+    return this->name[0] >= name[0]; // Same as above but for a string passed in
+}
+
+bool Game::operator<(const Game &src)
+{
+    return name[0] < src.name[0]; // Returns true if first character earlier in alphabet than src.name's first character, false if not
+}
+
+bool Game::operator<(const string name)
+{
+    return this->name[0] < name[0]; // Same as above but for a string passed in
+}
+
+bool Game::operator<=(const Game &src)
+{
+    return name[0] <= src.name[0]; // Returns true if first character earlier in alphabet or equal to src.name's first character, false if not
+}
+
+bool Game::operator<=(const string name)
+{
+    return this->name[0] <= name[0]; // Same as above but for a string passed in
 }
 
 bool Game::writeReview()

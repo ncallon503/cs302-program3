@@ -3,27 +3,40 @@
 
 int main()
 {
-    Board aBoardGame;
-    aBoardGame.writeReview();
-    aBoardGame.writeReview();
-    aBoardGame.displayDetail();
+    Tree aTree;
 
-    Node *aNode = new Node(new Board());
-    aNode->getGame()->writeReview();
-    cout << "aNode:" << *aNode << "\n";
+    Board aBoard;
 
-    aNode->setLeft(new Node(new Board()));
-    aNode->setRight(new Node(new Board()));
+    for (int i = 0; i < 3; i++)
+    {
+        cin >> aBoard;
+        aTree.insert(&aBoard);
+    }
 
-    aNode->getLeft()->getGame()->writeReview();
-    aNode->getRight()->getGame()->writeReview();
+    aTree.displayDetail();
+    aTree.displayQuick();
 
-    cout << "aNode->getLeft(): \n";
-    aNode->getLeft()->getGame()->displayDetail();
-    cout << "aNode->getRight(): \n";
-    aNode->getRight()->getGame()->displayDetail();
+    // Board aBoardGame;
+    // aBoardGame.writeReview();
+    // aBoardGame.writeReview();
+    // aBoardGame.displayDetail();
 
-    delete aNode;
+    // Node *aNode = new Node(new Board());
+    // aNode->getGame()->writeReview();
+    // cout << "aNode:" << *aNode << "\n";
+
+    // aNode->setLeft(new Node(new Board()));
+    // aNode->setRight(new Node(new Board()));
+
+    // aNode->getLeft()->getGame()->writeReview();
+    // aNode->getRight()->getGame()->writeReview();
+
+    // cout << "aNode->getLeft(): \n";
+    // aNode->getLeft()->getGame()->displayDetail();
+    // cout << "aNode->getRight(): \n";
+    // aNode->getRight()->getGame()->displayDetail();
+
+    // delete aNode;
 
     // Review temp;
     // cin >> temp;
