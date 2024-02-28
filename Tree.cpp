@@ -132,7 +132,6 @@ bool Tree::insertHelper(Node *src, Node *parent, Game *aGame)
     }
     else if (*aGame > *src->getGame())
     {
-        cout << "Right case happened\n";
         if (src->getRight() == nullptr)
         {
             src->setRight(new Node(aGame));

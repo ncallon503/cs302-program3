@@ -201,7 +201,7 @@ bool Board::displayDetail() const
 
 Game *Board::clone() const
 {
-    return new Board(*this); // Returns a new Board object with the same data
+    return new Board(*this); // I implemented this to be safe and never have two pointers pointing at the same memory with copy constructors and assignment operators
 }
 
 // End Board Class
