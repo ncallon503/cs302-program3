@@ -8,6 +8,7 @@
 #include <limits>
 #include <exception>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
