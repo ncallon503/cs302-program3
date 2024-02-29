@@ -1,16 +1,15 @@
-# Define the C++ compiler to use
+# Compiler to use
 CXX = g++
 
-# Define any compile-time flags
+# Compile flags
 CXXFLAGS = -Wall -g
 
-# Define the source files
+# Source files
 SRCS = Callon-Nathan-Program3.cpp Game.cpp Tree.cpp
 
-# Define the object files
+# Objects
 OBJS = $(SRCS:.cpp=.o)
 
-# Define the executable file
 MAIN = test.out
 
 all: $(MAIN)
