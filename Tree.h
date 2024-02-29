@@ -51,11 +51,11 @@ public:
 private:
   Node *root;
 
-  bool insertHelper(Node *src, Node *parent, Game *aGame);                   // Helper function for insert
-  Node *findAccessRootInsert(Node *src, Node *parent, Game *aGame);          // This helps find the place to treat as root to insert for the score
-  bool removeHelper(Node *&src, const string name, const int accessibility); // Helper function for remove
-  Node *findAccessRootRemove(Node *src, Node *parent, Game *aGame);          // This is the remove version of finding root of accessibility
-  Node *goLeftMost(Node *src);                                               // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
+  bool insertHelper(Node *src, Node *parent, Game *aGame);                                         // Helper function for insert
+  Node *findAccessRootInsert(Node *src, Node *parent, Game *aGame);                                // This helps find the place to treat as root to insert for the score
+  bool removeHelper(Node *&src, const string name, const int accessibility);                       // Helper function for remove
+  Node *findAccessRootRemove(Node *src, Node *parent, const string name, const int accessibility); // This is the remove version of finding root of accessibility
+  Node *goLeftMost(Node *src);                                                                     // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
 
   bool displayQuick(Node *src);  // Helper for displayQuick
   bool displayDetail(Node *src); // Helper for displayDetail
