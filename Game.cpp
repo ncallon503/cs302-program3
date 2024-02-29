@@ -38,7 +38,7 @@ istream &operator>>(istream &is, Game &src)
     return is;
 }
 
-bool Game::operator==(const string name)
+bool Game::operator==(const string name) // This one will only compare the name.
 {
     return this->name == name; // Returns true if matching, false if not
 }
@@ -60,17 +60,17 @@ bool Game::operator!=(const Game &src)
 
 bool Game::operator>(const Game &src)
 {
-    return name[0] > src.name[0]; // Returns true if first character later in alphabet than src.name's first character, false if not
+    return (name[0] > src.name[0]) && (score > src.score); // Only returns true if both are greater, false if not
 }
 
 bool Game::operator>(const string name)
 {
-    return this->name[0] > name[0]; // Same as above but for a string passed in
+    return this->name[0] > name[0]; // Only checks for a string
 }
 
 bool Game::operator>=(const Game &src)
 {
-    return name[0] >= src.name[0]; // Returns true if first character later or equal to src.name's first character, false if not
+    return (name[0] >= src.name[0]) && (score >= src.score); // Returns true if both are greater or equal, false if not
 }
 
 bool Game::operator>=(const string name)
@@ -80,7 +80,7 @@ bool Game::operator>=(const string name)
 
 bool Game::operator<(const Game &src)
 {
-    return name[0] < src.name[0]; // Returns true if first character earlier in alphabet than src.name's first character, false if not
+    return (name[0] < src.name[0]) && (score < src.score); // Returns true if both are less, false if not
 }
 
 bool Game::operator<(const string name)
@@ -90,7 +90,7 @@ bool Game::operator<(const string name)
 
 bool Game::operator<=(const Game &src)
 {
-    return name[0] <= src.name[0]; // Returns true if first character earlier in alphabet or equal to src.name's first character, false if not
+    return (name[0] <= src.name[0]) && (score <= src.score); // Returns true if both are less or equal, false if not
 }
 
 bool Game::operator<=(const string name)

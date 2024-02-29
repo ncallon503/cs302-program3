@@ -52,17 +52,18 @@ public:
   friend ostream &operator<<(ostream &os, const Game &src); // The overloaded ostream operator displays the game simply and not in detail, so just its name and type of game
   friend istream &operator>>(istream &is, Game &src);       // The overloaded istream operator prompts the user to enter details for the game and leave a review
 
+  // For this assignment we will use two search keys, they will be the name of the game and the average score of the game (accumulated from all the reviews).
   bool operator==(const string name); // Compares the game's name to a string that is passed in
   bool operator==(const Game &op2);   // Compares two games and returns true if same name
   bool operator!=(const string name); // Same but inverse as above
   bool operator!=(const Game &op2);   // ^^^
-  bool operator>(const string name);  // Compares alphabetically and returns true if later in alphabet
+  bool operator>(const string name);  // Compares name alphabetically and rating numerically and returns true if greater
   bool operator>(const Game &op2);    // Game object version ^
-  bool operator>=(const string name); // Same as above but for Game objects
+  bool operator>=(const string name); // Compares name alphabetically and rating numerically and returns true if greater or equal
   bool operator>=(const Game &op2);   // Game object version ^
-  bool operator<(const string name);  // Compares alphabetically and returns true if earlier in alphabet
+  bool operator<(const string name);  // Compares name alphabetically and rating numerically and returns true if less
   bool operator<(const Game &op2);    // Game object version ^
-  bool operator<=(const string name); // Same as above but for Game objects
+  bool operator<=(const string name); // Compares name alphabetically and rating numerically and returns true if less or equal
   bool operator<=(const Game &op2);   // Game object version ^
 
   const string getName() const; // Getter for name, only one that is needed, for recursion in the removeHelper Tree function
