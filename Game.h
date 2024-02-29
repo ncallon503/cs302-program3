@@ -72,8 +72,8 @@ public:
   virtual Game *clone() const = 0; // I made a clone method for the node constructors to use their own memory
 
 protected:
-  double sumDifficulty(int index); // Helper function that sums difficulty of all reviews
-  double sumScore(int index);      // Helper function that sums score of all reviews
+  double sumDifficulty(unsigned int index); // Helper function that sums difficulty of all reviews
+  double sumScore(unsigned int index);      // Helper function that sums score of all reviews
 
   bool update(); // Updates average difficulty and score after a review is added
 

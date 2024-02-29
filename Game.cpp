@@ -119,7 +119,7 @@ bool Game::writeReview()
     return true;
 }
 
-double Game::sumDifficulty(int index)
+double Game::sumDifficulty(unsigned int index)
 {
     if (index == reviews.size()) // Base case for end of vector
     {
@@ -128,7 +128,7 @@ double Game::sumDifficulty(int index)
     return reviews[index].getDifficulty() + sumDifficulty(index + 1); // Recursively return difficulty + next difficulty
 }
 
-double Game::sumScore(int index)
+double Game::sumScore(unsigned int index)
 {
     if (index == reviews.size()) // Base case for end of vector
     {
@@ -192,7 +192,7 @@ bool Board::displayDetail() const
 {
     cout << "Type: Board Game, Name: " << name << ", Genre: " << genre << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
     cout << "Reviews: \n";
-    for (int i = 0; i < reviews.size(); i++)
+    for (unsigned int i = 0; i < reviews.size(); i++) // unsigned for vector
     {
         cout << reviews[i];
     }

@@ -1,34 +1,24 @@
-# Compiler to use
-CXX = g++
-
-# Compile flags
-CXXFLAGS = -Wall -g
-
-# Source files
-SRCS = Callon-Nathan-Program3.cpp Game.cpp Tree.cpp
-
-# Objects
-OBJS = $(SRCS:.cpp=.o)
-
-MAIN = test.out
-
-all: $(MAIN)
-    @echo Simple compiler named $(MAIN) has been compiled.
-
-$(MAIN): $(OBJS)
-    $(CXX) $(CXXFLAGS) -o $(MAIN) $(OBJS)
-
-# To create the object files
-%.o: %.cpp
-    $(CXX) $(CXXFLAGS) -c $< -o $@
-
-# To start over from scratch, type 'make clean'. This removes the executable file, as well as old .o object
-# files and *~ backup files:
-clean:
-    $(RM) $(OBJS) $(MAIN)
-
-# Suffix replacement within a macro:
-#   $(name:string1=string2)
-#   For each word in 'name' replace 'string1' with 'string2'
-# In the target below we are replacing the suffix .cpp of all words in the macro SRCS
-# with the .o suffix
+# Makefile for Writing Make Files Example
+ 
+# *****************************************************
+# Variables to control Makefile operation
+ 
+CC = g++
+CFLAGS = -Wall -g
+ 
+# ****************************************************
+# Targets needed to bring the executable up to date
+ 
+Callon-Nathan-Program3: Callon-Nathan-Program3.o Game.o Tree.o
+    $(CC) $(CFLAGS) -o Callon-Nathan-Program3 Callon-Nathan-Program3.o Game.o Tree.o
+ 
+# The main.o target can be written more simply
+ 
+Callon-Nathan-Program3.o: Callon-Nathan-Program3.cpp Tree.h Game.h
+    $(CC) $(CFLAGS) -c Callon-Nathan-Program3.cpp
+ 
+Game.o: Game.cpp Game.h
+	$(CC) $(CFLAGS) -c Game.cpp
+ 
+Tree.o: Tree.cpp Tree.h
+	$(CC) $(CFLAGS) -c Tree.cpp
