@@ -28,10 +28,17 @@ ostream &operator<<(ostream &os, const Game &src)
 }
 istream &operator>>(istream &is, Game &src)
 {
+    string accessLevel = "";
     cout << "Enter a name: ";
     is >> src.name;
     cout << "Enter a genre: ";
     is >> src.genre;
+    cout << "Enter an accessibility level: ";
+    {
+        if (!(cin >> accessLevel)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+            throw RangeException();
+    }
+    src.accessibilityLevel = stoi(accessLevel);
     cout << "Enter the first review: ";
     src.writeReview();
     src.update(); // Updates average ratings (right now this will only go off of one review)
@@ -60,7 +67,7 @@ bool Game::operator!=(const Game &src)
 
 bool Game::operator>(const Game &src)
 {
-    return (name[0] > src.name[0]) && (score > src.score); // Only returns true if both are greater, false if not
+    return name[0] > src.name[0]; // Only returns true if both are greater, false if not
 }
 
 bool Game::operator>(const string name)
@@ -70,7 +77,7 @@ bool Game::operator>(const string name)
 
 bool Game::operator>=(const Game &src)
 {
-    return (name[0] >= src.name[0]) && (score >= src.score); // Returns true if both are greater or equal, false if not
+    return name[0] >= src.name[0]; // Returns true if both are greater or equal, false if not
 }
 
 bool Game::operator>=(const string name)
@@ -80,7 +87,7 @@ bool Game::operator>=(const string name)
 
 bool Game::operator<(const Game &src)
 {
-    return (name[0] < src.name[0]) && (score < src.score); // Returns true if both are less, false if not
+    return name[0] < src.name[0]; // Returns true if both are less, false if not
 }
 
 bool Game::operator<(const string name)
@@ -90,7 +97,7 @@ bool Game::operator<(const string name)
 
 bool Game::operator<=(const Game &src)
 {
-    return (name[0] <= src.name[0]) && (score <= src.score); // Returns true if both are less or equal, false if not
+    return name[0] <= src.name[0]; // Returns true if both are less or equal, false if not
 }
 
 bool Game::operator<=(const string name)
@@ -111,8 +118,7 @@ bool Game::writeReview()
         cerr << e.what() << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore rest of bad input
-        cout << "Failing at !e thing";
-        return writeReview(); // Recursively return until valid input is entered
+        return writeReview();                                // Recursively return until valid input is entered
     }
     reviews.push_back(temp); // If passed through all of that, successfully adds review
     update();                // Updates the difficulty and score
@@ -155,6 +161,11 @@ const string Game::getName() const
     return name; // A necessary getter for the removeHelper function, we use the operators otherwise
 }
 
+const int Game::getAccessibility() const
+{
+    return accessibilityLevel; // We use this to find where to insert due to having 2 keys
+}
+
 // End Parent Class
 
 // -----------------
@@ -190,7 +201,7 @@ bool Board::displayQuick() const
 
 bool Board::displayDetail() const
 {
-    cout << "Type: Board Game, Name: " << name << ", Genre: " << genre << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
+    cout << "Type: Board Game, Name: " << name << ", Genre: " << genre << ", accessibility: " << accessibilityLevel << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
     cout << "Reviews: \n";
     for (unsigned int i = 0; i < reviews.size(); i++) // unsigned for vector
     {

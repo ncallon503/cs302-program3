@@ -16,7 +16,7 @@ class RangeException : public exception
 {
   virtual const char *what() const throw()
   {
-    return "Invalid input. For the rating and difficulty please remember to enter an integer from 1 to 10.";
+    return "Invalid input. For the accessibility, rating and difficulty please remember to enter an integer from 1 to 10.";
   }
 };
 class Review // The review class is used to store reviews in a vector in the Game class
@@ -58,16 +58,17 @@ public:
   bool operator==(const Game &op2);   // Compares two games and returns true if same name
   bool operator!=(const string name); // Same but inverse as above
   bool operator!=(const Game &op2);   // ^^^
-  bool operator>(const string name);  // Compares name alphabetically and rating numerically and returns true if greater
+  bool operator>(const string name);  // Compares name alphabetically and returns true if greater
   bool operator>(const Game &op2);    // Game object version ^
-  bool operator>=(const string name); // Compares name alphabetically and rating numerically and returns true if greater or equal
+  bool operator>=(const string name); // Compares name alphabetically and returns true if greater or equal
   bool operator>=(const Game &op2);   // Game object version ^
-  bool operator<(const string name);  // Compares name alphabetically and rating numerically and returns true if less
+  bool operator<(const string name);  // Compares name alphabetically and returns true if less
   bool operator<(const Game &op2);    // Game object version ^
-  bool operator<=(const string name); // Compares name alphabetically and rating numerically and returns true if less or equal
+  bool operator<=(const string name); // Compares name alphabetically and returns true if less or equal
   bool operator<=(const Game &op2);   // Game object version ^
 
-  const string getName() const; // Getter for name, only one that is needed, for recursion in the removeHelper Tree function
+  const string getName() const;       // Getter for name, this is needed for recursion in the removeHelper Tree function
+  const int getAccessibility() const; // Getter for score, we use this for the insert to find a game with similar rating (if exists), and if exists, then we insert alphabetically by name and same rating
 
   virtual Game *clone() const = 0; // I made a clone method for the node constructors to use their own memory
 
@@ -79,6 +80,7 @@ protected:
 
   string name;            // Name of the game
   string genre;           // Genre of the game
+  int accessibilityLevel; // Accessibility level of the game (1-10)
   double score;           // Score of 1-10 how good the game is based on reviews
   double difficulty;      // Score of 1-10 on how difficult the game is
   vector<Review> reviews; // Vector of reviews containing description, difficulty, and score

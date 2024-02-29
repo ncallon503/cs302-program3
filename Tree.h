@@ -42,18 +42,20 @@ public:
   Tree &operator=(const Tree &src);
   ~Tree();
 
-  bool insert(Game *aGame);       // Inserts a new game by passing a pointer of a Game
-  bool remove(const string name); // Removes a game by passing in the name of the game to remove
-  bool removeAll();               // Recursively removes all nodes in a tree
-  bool displayQuick();            // Displays all games in the tree simply by name and type
-  bool displayDetail();           // Displays all games in the tree and their details including reviews
+  bool insert(Game *aGame);                                // Inserts a new game by passing a pointer of a Game
+  bool remove(const string name, const int accessibility); // Removes a game by passing in the name of the game to remove and the score of it (needs both name and score due to 2 keys)
+  bool removeAll();                                        // Recursively removes all nodes in a tree
+  bool displayQuick();                                     // Displays all games in the tree simply by name and type
+  bool displayDetail();                                    // Displays all games in the tree and their details including reviews
 
 private:
   Node *root;
 
-  bool insertHelper(Node *src, Node *parent, Game *aGame); // Helper function for insert
-  bool removeHelper(Node *&src, const string name);        // Helper function for remove
-  Node *goLeftMost(Node *src);                             // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
+  bool insertHelper(Node *src, Node *parent, Game *aGame);                   // Helper function for insert
+  Node *findAccessRootInsert(Node *src, Node *parent, Game *aGame);          // This helps find the place to treat as root to insert for the score
+  bool removeHelper(Node *&src, const string name, const int accessibility); // Helper function for remove
+  Node *findAccessRootRemove(Node *src, Node *parent, Game *aGame);          // This is the remove version of finding root of accessibility
+  Node *goLeftMost(Node *src);                                               // Because iteration is not allowed, this is needed to traverse left for the inorder successor for the removeHelper
 
   bool displayQuick(Node *src);  // Helper for displayQuick
   bool displayDetail(Node *src); // Helper for displayDetail

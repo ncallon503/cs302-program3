@@ -38,7 +38,7 @@ int main()
     aTree.displayQuick();
 
     cout << "Removing removeMe:\n";
-    aTree.remove("removeMe");
+    aTree.remove("removeMe", 5);
 
     cout << "Displaying after removeMe:\n";
     aTree.displayQuick();

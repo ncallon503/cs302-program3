@@ -108,7 +108,49 @@ bool Tree::insert(Game *aGame)
         root = new Node(aGame);
         return true;
     }
-    return insertHelper(root, nullptr, aGame);
+    Node *toInsertAt = findAccessRootInsert(root, nullptr, aGame); // We use the score to find the correct place to insert (if a node is not found, we use the most recent before null found)
+    if (toInsertAt == nullptr)                                     // If this was null, we don't need to traverse anymore and operation is done
+        return true;
+    return insertHelper(toInsertAt, nullptr, aGame);
+}
+
+Node *Tree::findAccessRootInsert(Node *src, Node *parent, Game *aGame)
+{
+    if (aGame->getAccessibility() < src->getGame()->getAccessibility()) // We use this to find the subtree that has the correct score to insert it there
+    {
+        if (src->getLeft() == nullptr) // Easy case, sets it, done
+        {
+            src->setLeft(new Node(aGame));
+            return nullptr;
+        }
+        else
+        {
+            if (src->getLeft()->getGame()->getAccessibility() != aGame->getAccessibility()) // If it is not equal, we need to keep traversing recursively
+            {
+                return findAccessRootInsert(src->getLeft(), src, aGame);
+            }
+            else // Else we can call insert
+                insertHelper(src->getLeft(), src, aGame);
+        }
+    }
+    else if (aGame->getAccessibility() >= src->getGame()->getAccessibility())
+    {
+        if (src->getRight() == nullptr) // Easy case, sets it, done
+        {
+            src->setRight(new Node(aGame));
+            return nullptr;
+        }
+        else
+        {
+            if (src->getRight()->getGame()->getAccessibility() != aGame->getAccessibility()) // If it is not equal, we need to keep traversing recursively
+            {
+                return findAccessRootInsert(src->getRight(), src, aGame);
+            }
+            else // Else we can call insert
+                insertHelper(src->getRight(), src, aGame);
+        }
+    }
+    return nullptr;
 }
 
 bool Tree::insertHelper(Node *src, Node *parent, Game *aGame)
@@ -151,17 +193,17 @@ bool Tree::insertHelper(Node *src, Node *parent, Game *aGame)
     return false;
 }
 
-bool Tree::remove(const string name)
+bool Tree::remove(const string name, const int score)
 {
     if (!root) // Empty tree
     {
         cout << "Cannot remove from empty tree.\n";
         return false;
     }
-    return removeHelper(root, name);
+    return removeHelper(root, name, score);
 }
 
-bool Tree::removeHelper(Node *&src, const string name)
+bool Tree::removeHelper(Node *&src, const string name, const int accessibility)
 {
     if (!src)
     {
@@ -170,11 +212,11 @@ bool Tree::removeHelper(Node *&src, const string name)
     }
     if (*src->getGame() > name) // If the name is later in the alphabet, go left
     {
-        return removeHelper(src->getLeft(), name);
+        return removeHelper(src->getLeft(), name, accessibility);
     }
     else if (*src->getGame() < name) // If the name is earlier in the alphabet, go right
     {
-        return removeHelper(src->getRight(), name);
+        return removeHelper(src->getRight(), name, accessibility);
     }
     else if (*src->getGame() == name) // If the name is the same, we have found the node to remove
     {
@@ -197,9 +239,9 @@ bool Tree::removeHelper(Node *&src, const string name)
         else // Covers case of two children
         {
             // Find inorder successor (smallest in the right subtree)
-            Node *leftMost = goLeftMost(src->getRight());                  // This recursively traverses left to get the leftmost node of the right subtree
-            src->setGame(leftMost->getGame());                             // Replace this nodes content with inorder successor
-            removeHelper(src->getRight(), leftMost->getGame()->getName()); // This removes the inorder successor (leftMost) from the right subtree
+            Node *leftMost = goLeftMost(src->getRight());                                                           // This recursively traverses left to get the leftmost node of the right subtree
+            src->setGame(leftMost->getGame());                                                                      // Replace this nodes content with inorder successor
+            removeHelper(src->getRight(), leftMost->getGame()->getName(), leftMost->getGame()->getAccessibility()); // This removes the inorder successor (leftMost) from the right subtree
         }
         return true; // Node removed successfully
     }
