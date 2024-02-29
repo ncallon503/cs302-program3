@@ -1,3 +1,15 @@
+/* My initial approach to the organization was using the names as the main categorizer for sorting
+my binary search tree, but I think the better approach would be to use a constant integer
+that is unchanging rather than duplicate names. What I mean by constant, is I have values
+that actually change every single time a review is written by someone, being the score and difficulty
+doubles, which are averages of all the reviews written on a Game, and change every time a
+review is written by using the update() function at the end of these reviews. These would definitely mess
+up the tree if I am sorting by them as they would change every time a review is written but not
+move on the tree. So I chose accessibility level for my integer, and what this will do,
+is due to having 2 key values to sort by and not one, accessibility will make its own smaller
+subtrees (roots being integers from the range in RangeException) and for the names they will
+be inserted in these smaller subtrees alphabetically. */
+
 #ifndef _TREE_CPP_
 #define _TREE_CPP_
 #include "Tree.h"
@@ -123,14 +135,16 @@ Node *Tree::findAccessRootInsert(Node *src, Node *parent, Game *aGame)
             src->setLeft(new Node(aGame));
             return nullptr;
         }
-        else
+        else // Left child not nullptr
         {
-            if (src->getLeft()->getGame()->getAccessibility() != aGame->getAccessibility()) // If it is not equal, we need to keep traversing recursively
+            if (src->getLeft()->getGame()->getAccessibility() == aGame->getAccessibility()) // If it is equal, we return src->getLeft() as the sub-root
+            {
+                return src->getLeft(); // We found the root! Now we use the insertHelper on this
+            }
+            else // If it is not equal, we need to keep traversing recursively
             {
                 return findAccessRootInsert(src->getLeft(), src, aGame);
             }
-            else // Else we can call insert
-                insertHelper(src->getLeft(), src, aGame);
         }
     }
     else if (aGame->getAccessibility() >= src->getGame()->getAccessibility())
@@ -140,14 +154,16 @@ Node *Tree::findAccessRootInsert(Node *src, Node *parent, Game *aGame)
             src->setRight(new Node(aGame));
             return nullptr;
         }
-        else
+        else // Right child not nullptr
         {
-            if (src->getRight()->getGame()->getAccessibility() != aGame->getAccessibility()) // If it is not equal, we need to keep traversing recursively
+            if (src->getRight()->getGame()->getAccessibility() == aGame->getAccessibility()) // If it is equal, we return src->getRight() as the sub-root
+            {
+                return src->getRight(); // We found the root! Now we use the insertHelper on this
+            }
+            else // If it is not equal, we need to keep traversing recursively
             {
                 return findAccessRootInsert(src->getRight(), src, aGame);
             }
-            else // Else we can call insert
-                insertHelper(src->getRight(), src, aGame);
         }
     }
     return nullptr;
