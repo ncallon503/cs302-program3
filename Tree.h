@@ -1,8 +1,9 @@
-/* In this program I decided to use a standard binary search tree as
-I think I will feel more comfortable implementing a red-black tree in
-python than in C++, most likely due to the difference in getters, setters,
-and the sheer amount of complexity using dynamic memory that C++ incorporates.
-I have a B*/
+/* For the tree strucutre I made the decision of using a binary search tree so I could focus more on
+the dynamic binding and overloading in this assignment so I wanted to dedicate all my time
+into that. With having 2 search keys, I have subtrees decided by accessibility level (which
+can be thought of as "easy of entry") and after that they are categorized alphabetically. Games
+are allocated in nodes by shared_ptr's and left and right node pointers use normal pointers. */
+
 #ifndef _TREE_H_
 #define _TREE_H_
 #include "Game.h"

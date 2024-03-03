@@ -1,11 +1,24 @@
+/* All the classes use dynamic binding to simplify the amount of code and
+avoid repetition, and I overloaded the operators to compare alphabetically
+in addition to having the Tree compare their accessibility level to sort them
+into their own "subtrees". The istream operator could not be made virtual so
+I made a virtual read function that is called so dynamic binding can actually take
+place and the correct child virtual class functions are called so things can be
+entered like equipment for a sport game, number of players for a board game, 18+
+for a video game and more. I also made a clone() method which returns a pointer
+new memory of the child class so the smart pointers could not point to a same
+object and cause weird interactions for Node copy constructors and assignment
+operators. */
+
 #ifndef _GAME_CPP_
 #define _GAME_CPP_
 #include "Game.h"
+
 // Parent Game Abstract Base Class
 
 Game::Game() : name(""), genre(""), score(0), difficulty(0) {}
 
-Game::Game(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews) : name(name), genre(genre), accessibilityLevel(accessibility), score(score), difficulty(difficulty), reviews(someReviews) {}
+Game::Game(const string name, const string genre, const int accessibility, const double score, const double difficulty, const vector<Review> someReviews) : name(name), genre(genre), accessibilityLevel(accessibility), score(score), difficulty(difficulty), reviews(someReviews) {}
 
 Game::Game(const Game &aGame) : name(aGame.name), genre(aGame.genre), accessibilityLevel(aGame.accessibilityLevel), score(aGame.score), difficulty(aGame.difficulty), reviews(aGame.reviews) {}
 
@@ -30,26 +43,37 @@ ostream &operator<<(ostream &os, const Game &src)
 }
 istream &operator>>(istream &is, Game &src)
 {
+    src.read(is);
+    return is;
+}
+
+bool Game::read(istream &is)
+{
     string accessLevel = "";
     cout << "Enter a name: ";
-    is >> src.name;
+    is >> name;
     cout << "Enter a genre: ";
-    is >> src.genre;
+    is >> genre;
     cout << "Enter an accessibility level between 1 and 10: ";
     {
         if (!(cin >> accessLevel)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
             throw RangeException();
+    }
+    if (!isdigit(accessLevel[0])) // Check for valid input
+    {
+        cout << "Accessibility must be a number. ";
+        throw RangeException();
     }
     if (stoi(accessLevel) < 0 || stoi(accessLevel) > 10) // Check range as well
     {
         cout << "Accessibility must be between 0 and 10.";
         throw RangeException();
     }
-    src.accessibilityLevel = stoi(accessLevel);
-    cout << "Enter the first review: ";
-    src.writeReview();
-    src.update(); // Updates average ratings (right now this will only go off of one review)
-    return is;
+    accessibilityLevel = stoi(accessLevel);
+    cout << "Entering first review ---v:\n";
+    writeReview();
+    update(); // Updates average ratings (right now this will only go off of one review)
+    return true;
 }
 
 bool Game::operator==(const string name) // This one will only compare the name.
@@ -191,7 +215,7 @@ const int Game::getAccessibility() const
 
 Board::Board() : Game(), numPlayers(0), averageTime(0) {}
 
-Board::Board(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const int numPlayers, const int averageTime) : Game(name, genre, accessibility, score, difficulty, someReviews), numPlayers(numPlayers), averageTime(averageTime) {}
+Board::Board(const string name, const string genre, const int accessibility, const double score, const double difficulty, const vector<Review> someReviews, const int numPlayers, const int averageTime) : Game(name, genre, accessibility, score, difficulty, someReviews), numPlayers(numPlayers), averageTime(averageTime) {}
 
 Board::Board(const Board &src) : Game(src), numPlayers(src.numPlayers), averageTime(src.averageTime) {}
 
@@ -214,24 +238,50 @@ ostream &operator<<(ostream &os, const Board &src)
     return os;
 }
 
-istream &operator>>(istream &is, Board &src)
+// istream &operator>>(istream &is, Board &src)
+// {
+//     string numPlayers = "", averageTime = "";
+//     cout << "Board version called";
+//     Game *temp = &src;
+//     is >> *temp;
+
+//     cout << "Enter a number of players recommended above 0: ";
+//     if (!(cin >> numPlayers)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+//         throw RangeException();
+//     if (stoi(numPlayers) <= 0) // Check range as well
+//     {
+//         cout << "Number of players must be above 0.";
+//         throw RangeException();
+//     }
+//     src.numPlayers = stoi(numPlayers);
+
+//     cout << "Enter the average duration this board game takes (in minutes): ";
+//     {
+//         if (!(cin >> averageTime)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+//             throw RangeException();
+//     }
+//     if (stoi(averageTime) <= 0) // Check range as well
+//     {
+//         cout << "Board game must take above 0 minutes.";
+//         throw RangeException();
+//     }
+//     src.averageTime = stoi(averageTime);
+//     return is;
+// }
+
+bool Board::read(istream &is)
 {
     string numPlayers = "", averageTime = "";
-    cout << "Board version called";
-    Game *temp = &src;
-    is >> *temp;
-
+    Game::read(is);
     cout << "Enter a number of players recommended above 0: ";
-    {
-        if (!(cin >> numPlayers)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
-            throw RangeException();
-    }
+    if (!(cin >> numPlayers)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+        throw RangeException();
     if (stoi(numPlayers) <= 0) // Check range as well
     {
         cout << "Number of players must be above 0.";
         throw RangeException();
     }
-    src.numPlayers = stoi(numPlayers);
+    numPlayers = stoi(numPlayers);
 
     cout << "Enter the average duration this board game takes (in minutes): ";
     {
@@ -243,8 +293,8 @@ istream &operator>>(istream &is, Board &src)
         cout << "Board game must take above 0 minutes.";
         throw RangeException();
     }
-    src.averageTime = stoi(averageTime);
-    return is;
+    averageTime = stoi(averageTime);
+    return true;
 }
 
 bool Board::displayQuick() const
@@ -255,7 +305,7 @@ bool Board::displayQuick() const
 
 bool Board::displayDetail() const
 {
-    cout << "Name: " << name << ", Type: Board Game, Genre: " << genre << ", accessibility: " << accessibilityLevel << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
+    cout << "Name: " << name << ", Type: Board Game, Genre: " << genre << ", accessibility: " << accessibilityLevel << ", Average Score: " << score << ", Average Difficulty: " << difficulty << "\n";
     cout << "Number of players: " << numPlayers << ", Average game time: " << averageTime << " minutes\n";
     cout << "Reviews: \n";
     displayReviews(0); // Recursively displays the reviews
@@ -275,7 +325,7 @@ Game *Board::clone() const
 
 Video::Video() : Game(), console(""), eighteenPlus(false) {}
 
-Video::Video(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const string console, const bool eighteenPlus) : Game(name, genre, accessibility, score, difficulty, someReviews), console(console), eighteenPlus(eighteenPlus) {}
+Video::Video(const string name, const string genre, const int accessibility, const double score, const double difficulty, const vector<Review> someReviews, const string console, const bool eighteenPlus) : Game(name, genre, accessibility, score, difficulty, someReviews), console(console), eighteenPlus(eighteenPlus) {}
 
 Video::Video(const Video &src) : Game(src), console(src.console), eighteenPlus(src.eighteenPlus) {}
 
@@ -298,14 +348,36 @@ ostream &operator<<(ostream &os, const Video &src)
     return os;
 }
 
-istream &operator>>(istream &is, Video &src)
+// istream &operator>>(istream &is, Video &src)
+// {
+//     cout << "Video version called\n";
+//     string eighteenPlus = "";
+//     Game *temp = &src;
+//     is >> *temp;
+
+//     cout << "Enter a console: ";
+//     is >> src.console;
+//     cout << "Is this game rated 18+? (1 for yes, 0 for no): ";
+//     {
+//         if (!(cin >> eighteenPlus)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+//             throw RangeException();
+//     }
+//     if (stoi(eighteenPlus) != 0 && stoi(eighteenPlus) != 1) // Check for valid input as well
+//     {
+//         cout << "Must be 0 or 1.";
+//         throw RangeException();
+//     }
+//     src.eighteenPlus = stoi(eighteenPlus);
+//     cout << "Reached this\n";
+//     return is;
+// }
+
+bool Video::read(istream &is)
 {
     string eighteenPlus = "";
-    Game *temp = &src;
-    is >> *temp;
-
+    Game::read(is);
     cout << "Enter a console: ";
-    is >> src.console;
+    is >> console;
     cout << "Is this game rated 18+? (1 for yes, 0 for no): ";
     {
         if (!(cin >> eighteenPlus)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
@@ -316,20 +388,20 @@ istream &operator>>(istream &is, Video &src)
         cout << "Must be 0 or 1.";
         throw RangeException();
     }
-    src.eighteenPlus = stoi(eighteenPlus);
-    return is;
+    eighteenPlus = stoi(eighteenPlus);
+    return true;
 }
 
 bool Video::displayQuick() const
 {
-    cout << "Type: Video Game, Name: " << name << ", Accessibility level: " << accessibilityLevel << "\n";
+    cout << "Name: " << name << ", Type: Video Game, Accessibility level: " << accessibilityLevel << "\n";
     return true;
 }
 
 bool Video::displayDetail() const
 {
     string yesOrNo = this->eighteenPlus ? "Yes" : "No"; // Displays yes or no instead of 0 or 1
-    cout << "Name: " << name << ", Type: Video Game, Genre: " << genre << ", Accessibility: " << accessibilityLevel << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
+    cout << "Name: " << name << ", Type: Video Game, Genre: " << genre << ", Accessibility: " << accessibilityLevel << ", Average Score: " << score << ", Average Difficulty: " << difficulty << "\n";
     cout << "Console: " << console << ", 18+: " << yesOrNo << "\n";
     cout << "Reviews: \n";
     displayReviews(0); // Recursively displays the reviews
@@ -338,16 +410,132 @@ bool Video::displayDetail() const
 
 Game *Video::clone() const
 {
-    return new Video(*this); // Implemented to be safe and not share memorys
+    return new Video(*this); // Implemented to be safe and not share memory
 }
 
 // End Video Class
 
 // -----------------
 
-// Derived Card Class
+// Derived Sport Class
 
-// End Card Class
+Sport::Sport() : Game(), equipment{}, positions{} {}
+
+Sport::Sport(const string name, const string genre, const int accessibility, const double score, const double difficulty, const vector<Review> someReviews, const vector<string> equipment, const vector<string> positions) : Game(name, genre, accessibility, score, difficulty, someReviews), equipment(equipment), positions(positions) {}
+
+Sport::Sport(const Sport &src) : Game(src), equipment(src.equipment), positions(src.positions) {}
+
+Sport &Sport::operator=(const Sport &src)
+{
+    if (this != &src)
+    {
+        Game::operator=(src); // Calls Game operator = to save repetition then copies the unique data
+        equipment = src.equipment;
+        positions = src.positions;
+    }
+    return *this;
+}
+
+Sport::~Sport() {} // Same as parent, no dynamic memory so no need
+
+ostream &operator<<(ostream &os, const Sport &src)
+{
+    src.displayQuick();
+    return os;
+}
+
+// istream &operator>>(istream &is, Sport &src)
+// {
+//     string equipPiece = "", aPosition = "";
+//     Game *temp = &src;
+//     is >> *temp;
+
+//     src.addEquipment(); // Adds equipment recursively from user input
+//     src.addPositions(); // Adds positions recursively from user input
+
+//     return is;
+// }
+
+bool Sport::read(istream &is)
+{
+    Game::read(is);
+    addEquipment(); // Adds equipment recursively from user input
+    addPositions(); // Adds positions recursively from user input
+    return true;
+}
+
+const int Sport::addEquipment()
+{
+    string equipPiece = "";
+    cout << "Enter a piece of equipment for the sport, or \"stop\" to stop.\n";
+    cin >> equipPiece;
+    if (equipPiece == "stop") // If the user enters -1, we return 0
+    {
+        return 0;
+    }
+    equipment.push_back(equipPiece); // Otherwise we add the equipment to the vector
+
+    return 1 + addEquipment(); // Returns 1 + the next piece of equipment
+}
+
+const int Sport::addPositions()
+{
+    string aPosition = "";
+    cout << "Enter a position for the sport, or \"stop\" to stop.\n";
+    cin >> aPosition;
+    if (aPosition == "stop") // If the user enters -1, we return 0
+    {
+        return 0;
+    }
+    positions.push_back(aPosition); // Otherwise we add the position to the vector
+
+    return 1 + addPositions(); // Returns 1 + the next position
+}
+
+bool Sport::displayQuick() const
+{
+    cout << "Name: " << name << ", Type: Sport, Accessibility level: " << accessibilityLevel << "\n";
+    return true;
+}
+
+bool Sport::displayDetail() const
+{
+    cout << "Name: " << name << ", Type: Sport, Genre: " << genre << ", Accessibility: " << accessibilityLevel << ", Average Score: " << score << ", Average Difficulty: " << difficulty << "\n";
+    cout << "Equipment: \n";
+    displayEquipment(0); // Recursively displays the equipment
+    cout << "\nPositions: \n";
+    displayPositions(0); // Recursively displays the positions
+    cout << "\nReviews: \n";
+    displayReviews(0); // Recursively displays the reviews
+    return true;
+}
+
+bool Sport::displayEquipment(const int index) const
+{
+    if (index == equipment.size()) // Base case for end of vector
+    {
+        return true;
+    }
+    cout << equipment[index] << "\t";   // Display the equipment
+    return displayEquipment(index + 1); // Recursively display the next piece of equipment
+}
+
+bool Sport::displayPositions(const int index) const
+{
+    if (index == positions.size()) // Base case for end of vector
+    {
+        return true;
+    }
+    cout << positions[index] << "\t";   // Display the position
+    return displayPositions(index + 1); // Recursively display the next position
+}
+
+Game *Sport::clone() const
+{
+    return new Sport(*this); // Implemented to be safe and not share memory
+}
+
+// End Sport Class
 
 // Review class for vectors
 

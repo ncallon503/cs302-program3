@@ -1,3 +1,9 @@
+/* The exceptions are defined in this class so all files have access to them, and right under I have
+the Review class which is a class that is contained by the Game class, Board game class, Video game class,
+and Sport class, where the user can write these reviews. Each class shares the derived similarities from
+the Abstract Base Game Class and then has their own functions and private data members that differ them
+from the other child classes. */
+
 #ifndef _GAME_H_
 #define _GAME_H_
 
@@ -9,6 +15,7 @@
 #include <exception>
 #include <string>
 #include <algorithm>
+#include <cctype>
 
 using namespace std;
 
@@ -61,6 +68,8 @@ public:
   friend ostream &operator<<(ostream &os, const Game &src); // The overloaded ostream operator displays the game simply and not in detail, so just its name and type of game
   friend istream &operator>>(istream &is, Game &src);       // The overloaded istream operator prompts the user to enter details for the game and leave a review
 
+  virtual bool read(istream &is); // Overloaded virtually so the istream operator will correctly call the derived class's read function (doesn't work with normal >> operator)
+
   // For this assignment we will use two search keys, they will be the name of the game and the average score of the game (accumulated from all the reviews).
   bool operator==(const string name); // Compares the game's name to a string that is passed in
   bool operator==(const Game &op2);   // Compares two games and returns true if same name
@@ -102,7 +111,7 @@ class Board : public Game // Child of Game Class
 {
 public:
   Board();
-  Board(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const int numPlayers, const int averageTime); // Constructor with manual arguments
+  Board(const string name, const string genre, const int accessibility, const double score, const double difficulty, const vector<Review> someReviews, const int numPlayers, const int averageTime); // Constructor with manual arguments
   Board(const Board &src);
   Board &operator=(const Board &src);
   ~Board();
@@ -111,7 +120,9 @@ public:
   bool displayDetail() const;
 
   friend ostream &operator<<(ostream &os, const Board &src);
-  friend istream &operator>>(istream &is, Board &src);
+  // friend istream &operator>>(istream &is, Board &src); // Replaced by read and called from parent
+
+  bool read(istream &is) override; // Overloaded virtually so the istream operator will correctly call the derived class's read function (doesn't work with normal >> operator)
 
   Game *clone() const; // Clone used for separating memory management
 private:
@@ -123,7 +134,7 @@ class Video : public Game // Child of Game Class
 {
 public:
   Video();
-  Video(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const string console, const bool eighteenPlus); // Constructor with manual arguments
+  Video(const string name, const string genre, const int accessibility, const double score, const double difficulty, const vector<Review> someReviews, const string console, const bool eighteenPlus); // Constructor with manual arguments
   Video(const Video &src);
   Video &operator=(const Video &src);
   ~Video();
@@ -134,6 +145,8 @@ public:
   friend ostream &operator<<(ostream &os, const Video &src);
   friend istream &operator>>(istream &is, Video &src);
 
+  bool read(istream &is); // Overloaded virtually so the istream operator will correctly call the derived class's read function (doesn't work with normal >> operator)
+
   Game *clone() const; // Clone used for separating memory management
 
 private:
@@ -141,18 +154,34 @@ private:
   bool eighteenPlus; // If the game is rated 18+
 };
 
-// class Sport : public Game // Child of Game Class
-// {
-// public:
-//   Sport();
-//   Sport(const Sport &src);
-//   Sport &operator=(const Sport &src);
-//   ~Sport();
+class Sport : public Game // Child of Game Class
+{
+public:
+  Sport();
+  Sport(const string name, const string genre, const int accessibility, const double score, const double difficulty, const vector<Review> someReviews, const vector<string> equipment, const vector<string> positions); // Constructor with manual arguments
+  Sport(const Sport &src);
+  Sport &operator=(const Sport &src);
+  ~Sport();
 
-//   bool displayQuick() const;
-//   bool displayDetail() const;
+  bool displayQuick() const;
+  bool displayDetail() const;
 
-// private:
-// };
+  friend ostream &operator<<(ostream &os, const Sport &src);
+  friend istream &operator>>(istream &is, Sport &src);
+
+  bool read(istream &is); // Overloaded virtually so the istream operator will correctly call the derived class's read function (doesn't work with normal >> operator)
+
+  Game *clone() const; // Clone used for separating memory management
+
+private:
+  const int addEquipment(); // Recursively adds equipment until user enters -1 and returns how many were added
+  const int addPositions(); // Recursively adds positions until user enters -1 and returns how many were added
+
+  bool displayEquipment(const int index) const; // Displays all equipment for the sport
+  bool displayPositions(const int index) const; // Displays all positions for the sport
+
+  vector<string> equipment; // Recommended equipment needed to play the sport
+  vector<string> positions; // Possible positions of the sport
+};
 
 #endif

@@ -1,7 +1,6 @@
-/* The UserMenu can essentially replace the main function because all the menu
-functionality is definied within this class. There are also exceptions for types
-of errors that will be thrown so the user can know what input is wrong and how
-to react correctly. */
+/* Similar to program #2, I use a user menu to replace main for the user interface
+and inside of it I have a private userTree which the menu accesses and manages
+through public functions to edit and view the tree. */
 
 #ifndef _MENU_H_
 #define _MENU_H_
