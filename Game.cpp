@@ -6,7 +6,7 @@
 
 Game::Game() : name(""), genre(""), score(0), difficulty(0) {}
 
-Game::Game(const Game &aGame) : name(aGame.name), genre(aGame.genre), score(aGame.score), difficulty(aGame.difficulty), reviews(aGame.reviews) {}
+Game::Game(const Game &aGame) : name(aGame.name), genre(aGame.genre), accessibilityLevel(aGame.accessibilityLevel), score(aGame.score), difficulty(aGame.difficulty), reviews(aGame.reviews) {}
 
 Game &Game::operator=(const Game &aGame)
 {
@@ -17,6 +17,7 @@ Game &Game::operator=(const Game &aGame)
         score = aGame.score;
         difficulty = aGame.difficulty;
         reviews = aGame.reviews;
+        accessibilityLevel = aGame.accessibilityLevel;
     }
     return *this;
 }
@@ -39,6 +40,7 @@ istream &operator>>(istream &is, Game &src)
             throw RangeException();
     }
     src.accessibilityLevel = stoi(accessLevel);
+    cout << "Accessibility entered is " << src.accessibilityLevel << "\n";
     cout << "Enter the first review: ";
     src.writeReview();
     src.update(); // Updates average ratings (right now this will only go off of one review)
@@ -195,7 +197,7 @@ ostream &operator<<(ostream &os, const Board &src)
 
 bool Board::displayQuick() const
 {
-    cout << "Type: Board Game, Name: " << name << "\n";
+    cout << "Type: Board Game, Name: " << name << ", Accessibility level: " << accessibilityLevel << "\n";
     return true;
 }
 

@@ -17,6 +17,18 @@ int main()
     Board aBoard4;
     cin >> aBoard4;
 
+    Board aBoard5;
+    cin >> aBoard5;
+
+    Board aBoard6;
+    cin >> aBoard6;
+
+    Board aBoard7;
+    cin >> aBoard7;
+
+    Board aBoard8;
+    cin >> aBoard8;
+
     // cout << "aBoard < aBoard2:" << (aBoard < aBoard2) << "\n";
     // cout << "aBoard <= aBoard2:" << (aBoard <= aBoard2) << "\n";
     // cout << "aBoard > aBoard2:" << (aBoard > aBoard2) << "\n";
@@ -38,6 +50,10 @@ int main()
     aTree.insert(&aBoard2);
     aTree.insert(&aBoard3);
     aTree.insert(&aBoard4);
+    aTree.insert(&aBoard5);
+    aTree.insert(&aBoard6);
+    aTree.insert(&aBoard7);
+    aTree.insert(&aBoard8);
 
     aTree.displayQuick();
 
