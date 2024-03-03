@@ -316,7 +316,7 @@ bool Tree::removeHelper(Node *&src, const string name, const int accessibility)
         cout << "Could not find node to remove.\n";
         return false; // Base case, could not find node with name to remove
     }
-    if (*src->getGame() > name) // If the name is later in the alphabet, go left
+    if (*src->getGame() > name) // If the name is later in the alphabet, go left (These look weird but have to be reversed because the way the operator I overloaded works)
     {
         return removeHelper(src->getLeft(), name, accessibility);
     }
@@ -356,11 +356,15 @@ bool Tree::removeHelper(Node *&src, const string name, const int accessibility)
 
 bool Tree::displayQuick()
 {
+    if (!root)
+        cout << "The tree is empty, cannot display from an empty tree.\n";
     return displayQuick(root);
 }
 
 bool Tree::displayDetail()
 {
+    if (!root)
+        cout << "The tree is empty, cannot display from an empty tree.\n";
     return displayDetail(root);
 }
 

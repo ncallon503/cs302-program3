@@ -271,29 +271,29 @@ ostream &operator<<(ostream &os, const Board &src)
 
 bool Board::read(istream &is)
 {
-    string numPlayers = "", averageTime = "";
+    string numPlayersString = "", averageTimeString = "";
     Game::read(is);
     cout << "Enter a number of players recommended above 0: ";
-    if (!(cin >> numPlayers)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+    if (!(cin >> numPlayersString)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
         throw RangeException();
-    if (stoi(numPlayers) <= 0) // Check range as well
+    if (stoi(numPlayersString) <= 0) // Check range as well
     {
         cout << "Number of players must be above 0.";
         throw RangeException();
     }
-    numPlayers = stoi(numPlayers);
+    numPlayers = stoi(numPlayersString);
 
     cout << "Enter the average duration this board game takes (in minutes): ";
     {
-        if (!(cin >> averageTime)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+        if (!(cin >> averageTimeString)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
             throw RangeException();
     }
-    if (stoi(averageTime) <= 0) // Check range as well
+    if (stoi(averageTimeString) <= 0) // Check range as well
     {
         cout << "Board game must take above 0 minutes.";
         throw RangeException();
     }
-    averageTime = stoi(averageTime);
+    averageTime = stoi(averageTimeString);
     return true;
 }
 

@@ -71,7 +71,15 @@ const bool UserMenu::initializeTree()
     Sport sport4("Baseball", "Sport", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Cleats", "Jersey", "Bat"}, {"Pitcher", "Catcher", "First Baseman"});
     userTree.insert(&sport4);
 
-    userTree.displayDetail();
+    return true;
+}
+
+const bool UserMenu::greeting() const
+{
+    cout << "Welcome to the game menu. This is where you can find games to suit your needs and also add games that you like,\n"
+         << "write reviews for games and remove games that you dislike.\n"
+         << "You can also view all games from a first glance or view the intricacies of them.\n"
+         << "Please enter a number from 0 to 6 to choose an option.\n";
     return true;
 }
 
@@ -93,20 +101,20 @@ const int UserMenu::displayMenu()
             switch (input)
             {
             case 1:
-                cout << "Displaying game names, types, and accessibility levels.\n";
+                cout << "Displaying game names, types, and accessibility levels.\n\n";
                 userTree.displayQuick();
                 break;
             case 2:
-                cout << "Displaying games in detail including reviews from users.\n";
+                cout << "Displaying games in detail including reviews from users.\n\n";
                 userTree.displayDetail();
                 break;
             case 3:
                 cout << "Which game would you like to write a review for? Please enter the name and accessibility level:\n";
                 cout << "Please enter the name: \n";
                 cin >> nameToFind;
-                cout << "You have entered " << nameToFind << ", now please enter the accessibility level: \n";
+                cout << "You have entered " << nameToFind << " for the name, now please enter the accessibility level: \n";
                 accessibilityToFind = getInputChoice(0, 10);
-                cout << "You have entered " << accessibilityToFind << ", let's see if this exists first:\n";
+                cout << "You have entered accessibility level of " << accessibilityToFind << ", let's see if this exists first:\n";
                 if (userTree.findGame(nameToFind, accessibilityToFind) != nullptr)
                 {
                     cout << "This game exists, please enter your review for it:\n";
@@ -145,10 +153,24 @@ const int UserMenu::displayMenu()
                 gameToAdd = nullptr;
                 break;
             case 5:
-
+                cout << "Which game would you like to remove? Please enter the name and accessibility level:\n";
+                cout << "Please enter the name: \n";
+                cin >> nameToFind;
+                cout << "You have entered " << nameToFind << "for the name, now please enter the accessibility level: \n";
+                accessibilityToFind = getInputChoice(0, 10);
+                cout << "You have entered accessibility level of " << accessibilityToFind << ", attempting to remove the game:\n";
+                if (userTree.remove(nameToFind, accessibilityToFind))
+                {
+                    cout << "Game removed.\n";
+                }
+                else
+                {
+                    cout << "Game not found.\n";
+                }
                 break;
             case 6:
-
+                cout << "Removing all games.\n";
+                userTree.removeAll();
                 break;
             case 0:
                 cout << "Exiting, thanks for your co-operation.\n";
@@ -193,7 +215,7 @@ const int UserMenu::getInputChoice(const int minInt, const int maxInt) const
         if (minInt > maxInt)
             throw RangeException();
 
-        cout << "Please enter an integer between " << minInt << " and " << maxInt << ":\n\n";
+        cout << "Please enter an integer between " << minInt << " and " << maxInt << ":\n";
 
         string input = "";
         cin >> input;

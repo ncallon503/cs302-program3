@@ -12,7 +12,8 @@ class UserMenu
 public:
     UserMenu();
     ~UserMenu();
-    const int displayMenu(); // Displays initial menu
+    const bool greeting() const; // Greets the user and describes what the menu does
+    const int displayMenu();     // Displays the menu and handles user input (non-const because it modifies data throughout the entire program)
 
 private:
     const int getInputChoice(const int minInt, const int maxInt) const; // Gets user input as an integer between a max and minimum value, recursively calls until valid input entered
