@@ -189,7 +189,7 @@ const int Game::getAccessibility() const
 
 // Derived Board Class
 
-Board::Board() : Game() {}
+Board::Board() : Game(), numPlayers(0), averageTime(0) {}
 
 Board::Board(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const int numPlayers, const int averageTime) : Game(name, genre, accessibility, score, difficulty, someReviews), numPlayers(numPlayers), averageTime(averageTime) {}
 
@@ -249,13 +249,13 @@ istream &operator>>(istream &is, Board &src)
 
 bool Board::displayQuick() const
 {
-    cout << "Type: Board Game, Name: " << name << ", Accessibility level: " << accessibilityLevel << "\n";
+    cout << "Name: " << name << ", Type: Board Game, Accessibility level: " << accessibilityLevel << "\n";
     return true;
 }
 
 bool Board::displayDetail() const
 {
-    cout << "Type: Board Game, Name: " << name << ", Genre: " << genre << ", accessibility: " << accessibilityLevel << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
+    cout << "Name: " << name << ", Type: Board Game, Genre: " << genre << ", accessibility: " << accessibilityLevel << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
     cout << "Number of players: " << numPlayers << ", Average game time: " << averageTime << " minutes\n";
     cout << "Reviews: \n";
     displayReviews(0); // Recursively displays the reviews
@@ -273,6 +273,74 @@ Game *Board::clone() const
 
 // Derived Video Class
 
+Video::Video() : Game(), console(""), eighteenPlus(false) {}
+
+Video::Video(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const string console, const bool eighteenPlus) : Game(name, genre, accessibility, score, difficulty, someReviews), console(console), eighteenPlus(eighteenPlus) {}
+
+Video::Video(const Video &src) : Game(src), console(src.console), eighteenPlus(src.eighteenPlus) {}
+
+Video &Video::operator=(const Video &src)
+{
+    if (this != &src)
+    {
+        Game::operator=(src); // Calls Game operator = to save repetition then copies the unique data
+        console = src.console;
+        eighteenPlus = src.eighteenPlus;
+    }
+    return *this;
+}
+
+Video::~Video() {} // Same as parent, no dynamic memory so no need
+
+ostream &operator<<(ostream &os, const Video &src)
+{
+    src.displayQuick();
+    return os;
+}
+
+istream &operator>>(istream &is, Video &src)
+{
+    string eighteenPlus = "";
+    Game *temp = &src;
+    is >> *temp;
+
+    cout << "Enter a console: ";
+    is >> src.console;
+    cout << "Is this game rated 18+? (1 for yes, 0 for no): ";
+    {
+        if (!(cin >> eighteenPlus)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
+            throw RangeException();
+    }
+    if (stoi(eighteenPlus) != 0 && stoi(eighteenPlus) != 1) // Check for valid input as well
+    {
+        cout << "Must be 0 or 1.";
+        throw RangeException();
+    }
+    src.eighteenPlus = stoi(eighteenPlus);
+    return is;
+}
+
+bool Video::displayQuick() const
+{
+    cout << "Type: Video Game, Name: " << name << ", Accessibility level: " << accessibilityLevel << "\n";
+    return true;
+}
+
+bool Video::displayDetail() const
+{
+    string yesOrNo = this->eighteenPlus ? "Yes" : "No"; // Displays yes or no instead of 0 or 1
+    cout << "Name: " << name << ", Type: Video Game, Genre: " << genre << ", Accessibility: " << accessibilityLevel << ", Score: " << score << ", Difficulty: " << difficulty << "\n";
+    cout << "Console: " << console << ", 18+: " << yesOrNo << "\n";
+    cout << "Reviews: \n";
+    displayReviews(0); // Recursively displays the reviews
+    return true;
+}
+
+Game *Video::clone() const
+{
+    return new Video(*this); // Implemented to be safe and not share memorys
+}
+
 // End Video Class
 
 // -----------------
@@ -284,6 +352,8 @@ Game *Board::clone() const
 // Review class for vectors
 
 Review::Review() : description(""), difficulty(0), score(0) {}
+
+Review::Review(const string description, const double difficulty, const double score) : description(description), difficulty(difficulty), score(score) {}
 
 Review::Review(const Review &src) : description(src.description), difficulty(src.difficulty), score(src.score) {}
 

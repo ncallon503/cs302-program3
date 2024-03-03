@@ -29,6 +29,7 @@ class Review // The review class is used to store reviews in a vector in the Gam
 {
 public:
   Review();
+  Review(const string description, const double difficulty, const double score); // Constructor with manual arguments
   Review(const Review &src);
   Review &operator=(const Review &src);
   ~Review();
@@ -118,19 +119,27 @@ private:
   int averageTime; // Average duration of how long the games last
 };
 
-// class Video : public Game // Child of Game Class
-// {
-// public:
-//   Video();
-//   Video(const Video &src);
-//   Video &operator=(const Video &src);
-//   ~Video();
+class Video : public Game // Child of Game Class
+{
+public:
+  Video();
+  Video(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const string console, const bool eighteenPlus); // Constructor with manual arguments
+  Video(const Video &src);
+  Video &operator=(const Video &src);
+  ~Video();
 
-//   bool displayQuick() const;
-//   bool displayDetail() const;
+  bool displayQuick() const;
+  bool displayDetail() const;
 
-// private:
-// };
+  friend ostream &operator<<(ostream &os, const Video &src);
+  friend istream &operator>>(istream &is, Video &src);
+
+  Game *clone() const; // Clone used for separating memory management
+
+private:
+  string console;    // Console the game is played on
+  bool eighteenPlus; // If the game is rated 18+
+};
 
 // class Sport : public Game // Child of Game Class
 // {

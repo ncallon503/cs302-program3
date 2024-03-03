@@ -372,6 +372,7 @@ bool Tree::displayQuick(Node *src)
     }
     displayQuick(src->getLeft());
     src->getGame()->displayQuick();
+    cout << "\n ------------------- \n";
     displayQuick(src->getRight());
     return true;
 }
@@ -384,6 +385,7 @@ bool Tree::displayDetail(Node *src)
     }
     displayDetail(src->getLeft());
     src->getGame()->displayDetail();
+    cout << "\n ------------------- \n";
     displayDetail(src->getRight());
     return true;
 }
