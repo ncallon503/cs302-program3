@@ -24,14 +24,29 @@ UserMenu::~UserMenu()
 
 const bool UserMenu::initializeTree()
 {
-    Board aBoard("Chess", "Board", 7, 8.5, 5.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70);
-    userTree.insert(&aBoard);
+    Board board1("Chess", "Board", 7, 8.5, 5.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70);
+    userTree.insert(&board1);
 
-    userTree.insert(new Board("Checkers", "Board", 2, 7.5, 4.0, {Review("Good game", 4.0, 4.0), Review("I like it", 4.0, 4.0)}, 2, 70));
-    userTree.insert(new Board("Monopoly", "Board", 2, 6.5, 3.0, {Review("Okay game", 3.0, 3.0), Review("I don't mind it", 3.0, 3.0)}, 2, 70));
-    userTree.insert(new Board("Risk", "Board", 2, 8.0, 4.5, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70));
+    Board board2("Checkers", "Board", 2, 7.5, 4.0, {Review("Good game", 4.0, 4.0), Review("I like it", 4.0, 4.0)}, 2, 70);
+    userTree.insert(&board2);
 
-    userTree.insert(new Video("Call of Duty", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Xbox", true));
+    Board board3("Monopoly", "Board", 2, 6.5, 3.0, {Review("Okay game", 3.0, 3.0), Review("I don't mind it", 3.0, 3.0)}, 2, 70);
+    userTree.insert(&board3);
+
+    Board board4("Risk", "Board", 2, 8.0, 4.5, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70);
+    userTree.insert(&board4);
+
+    Video video1("Halo", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Xbox", true);
+    userTree.insert(&video1);
+
+    Video video2("Call of Duty", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Xbox", true);
+    userTree.insert(&video2);
+
+    Video video3("League", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "PC", false);
+    userTree.insert(&video3);
+
+    Video video4("Minecraft", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Universal", true);
+    userTree.insert(&video4);
 
     userTree.displayDetail();
     return true;
