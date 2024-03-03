@@ -238,37 +238,6 @@ ostream &operator<<(ostream &os, const Board &src)
     return os;
 }
 
-// istream &operator>>(istream &is, Board &src)
-// {
-//     string numPlayers = "", averageTime = "";
-//     cout << "Board version called";
-//     Game *temp = &src;
-//     is >> *temp;
-
-//     cout << "Enter a number of players recommended above 0: ";
-//     if (!(cin >> numPlayers)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
-//         throw RangeException();
-//     if (stoi(numPlayers) <= 0) // Check range as well
-//     {
-//         cout << "Number of players must be above 0.";
-//         throw RangeException();
-//     }
-//     src.numPlayers = stoi(numPlayers);
-
-//     cout << "Enter the average duration this board game takes (in minutes): ";
-//     {
-//         if (!(cin >> averageTime)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
-//             throw RangeException();
-//     }
-//     if (stoi(averageTime) <= 0) // Check range as well
-//     {
-//         cout << "Board game must take above 0 minutes.";
-//         throw RangeException();
-//     }
-//     src.averageTime = stoi(averageTime);
-//     return is;
-// }
-
 bool Board::read(istream &is)
 {
     string numPlayersString = "", averageTimeString = "";
@@ -348,30 +317,6 @@ ostream &operator<<(ostream &os, const Video &src)
     return os;
 }
 
-// istream &operator>>(istream &is, Video &src)
-// {
-//     cout << "Video version called\n";
-//     string eighteenPlus = "";
-//     Game *temp = &src;
-//     is >> *temp;
-
-//     cout << "Enter a console: ";
-//     is >> src.console;
-//     cout << "Is this game rated 18+? (1 for yes, 0 for no): ";
-//     {
-//         if (!(cin >> eighteenPlus)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
-//             throw RangeException();
-//     }
-//     if (stoi(eighteenPlus) != 0 && stoi(eighteenPlus) != 1) // Check for valid input as well
-//     {
-//         cout << "Must be 0 or 1.";
-//         throw RangeException();
-//     }
-//     src.eighteenPlus = stoi(eighteenPlus);
-//     cout << "Reached this\n";
-//     return is;
-// }
-
 bool Video::read(istream &is)
 {
     string eighteenPlus = "";
@@ -443,18 +388,6 @@ ostream &operator<<(ostream &os, const Sport &src)
     src.displayQuick();
     return os;
 }
-
-// istream &operator>>(istream &is, Sport &src)
-// {
-//     string equipPiece = "", aPosition = "";
-//     Game *temp = &src;
-//     is >> *temp;
-
-//     src.addEquipment(); // Adds equipment recursively from user input
-//     src.addPositions(); // Adds positions recursively from user input
-
-//     return is;
-// }
 
 bool Sport::read(istream &is)
 {
