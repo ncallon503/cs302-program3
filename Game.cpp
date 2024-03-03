@@ -59,9 +59,9 @@ bool Game::read(istream &is)
         if (!(cin >> accessLevel)) // The input stream does not throw an exception when the user enters a string instead of an integer so we need this as well
             throw RangeException();
     }
-    if (!isdigit(accessLevel[0])) // Check for valid input
+    if (!all_of(accessLevel.begin(), accessLevel.end(), ::isdigit)) // Check for valid input as well
     {
-        cout << "Accessibility must be a number. ";
+        cout << "Accessibiilty level must be a number.";
         throw RangeException();
     }
     if (stoi(accessLevel) < 0 || stoi(accessLevel) > 10) // Check range as well

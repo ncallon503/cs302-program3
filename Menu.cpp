@@ -16,12 +16,17 @@ by name and accessibility level, removing all the games in the tree, or exiting.
 
 const string IntException::errMsg() const
 {
-    return "Please enter an integer data type.\n";
+    return "Please enter a positive integer data type.\n";
 }
 
 const string RangeException::errMsg() const
 {
     return "Please enter numbers in the valid range.\n";
+}
+
+const string MinMaxException::errMsg() const
+{
+    return "The minimum value cannot be greater than the maximum value.\n";
 }
 
 UserMenu::UserMenu()
@@ -198,7 +203,7 @@ const int UserMenu::displayMenu()
     }
     catch (...) // Catch other exceptions such as stoi failure, etc
     {
-        cerr << "An error occurred, please try again.\n";
+        cerr << "An unknown error occurred, please try again.\n";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return displayMenu();
@@ -208,10 +213,8 @@ const int UserMenu::displayMenu()
 
 const int UserMenu::getInputChoice(const int minInt, const int maxInt) const
 {
-
     try
     {
-
         if (minInt > maxInt)
             throw RangeException();
 
@@ -220,23 +223,42 @@ const int UserMenu::getInputChoice(const int minInt, const int maxInt) const
         string input = "";
         cin >> input;
 
+        if (!all_of(input.begin(), input.end(), ::isdigit)) // Check if input is all digits
+            throw IntException();
+
         int integer = stoi(input);
         if (integer < minInt || integer > maxInt)
-            throw IntException();
+            throw RangeException();
 
         return integer;
     }
     catch (const IntException &e)
     {
-        cerr << e.what();
+        cerr << e.errMsg();
         cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return getInputChoice(minInt, maxInt); // Recursively return until the user enters correct input in the range
     }
     catch (const RangeException &e)
     {
-        cerr << e.what();
+        cerr << e.errMsg();
         cin.clear();
-        return 0; // This function cannot work with ranges that have minimums above their maximums etc., so it will return instead of going infinitely
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return getInputChoice(minInt, maxInt);
+    }
+    catch (const MinMaxException &e)
+    {
+        cerr << e.errMsg();
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return -1; // This function cannot work with ranges that have minimums above their maximums etc., so it will return instead of going infinitely
+    }
+    catch (...) // Catch other exceptions such as stoi failure, etc
+    {
+        cerr << "An unknown error occurred, please try again.\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return -1;
     }
 }
 

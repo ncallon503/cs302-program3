@@ -32,6 +32,12 @@ public:
   const string errMsg() const;
 };
 
+class MinMaxException : public exception
+{
+public:
+  const string errMsg() const;
+};
+
 class Review // The review class is used to store reviews in a vector in the Game class
 {
 public:
