@@ -7,8 +7,6 @@ I have a B*/
 #define _TREE_H_
 #include "Game.h"
 
-using namespace std;
-
 class Node
 {
 public:
@@ -42,11 +40,12 @@ public:
   Tree &operator=(const Tree &src);
   ~Tree();
 
-  bool insert(Game *aGame);                                // Inserts a new game by passing a pointer of a Game
-  bool remove(const string name, const int accessibility); // Removes a game by passing in the name of the game to remove and the score of it (needs both name and score due to 2 keys)
-  bool removeAll();                                        // Recursively removes all nodes in a tree
-  bool displayQuick();                                     // Displays all games in the tree simply by name and type
-  bool displayDetail();                                    // Displays all games in the tree and their details including reviews
+  bool insert(Game *aGame);                                   // Inserts a new game by passing a pointer of a Game
+  bool remove(const string name, const int accessibility);    // Removes a game by passing in the name of the game to remove and the score of it (needs both name and score due to 2 keys)
+  bool removeAll();                                           // Recursively removes all nodes in a tree
+  bool displayQuick();                                        // Displays all games in the tree simply by name and type
+  bool displayDetail();                                       // Displays all games in the tree and their details including reviews
+  Node *findGame(const string name, const int accessibility); // Finds a game by passing in the name and accessibiilty level
 
 private:
   Node *root;
@@ -61,6 +60,8 @@ private:
   bool displayDetail(Node *src); // Helper for displayDetail
 
   bool removeAllHelper(Node *src); // Helper for removeAll
+
+  Node *findGameHelper(Node *src, const string name, const int accessibility); // Helper for findGame
 
   Node *copyTree(Node *src); // Helper for copy constructor and assignment operator
 };

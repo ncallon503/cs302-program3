@@ -115,7 +115,6 @@ Tree::~Tree()
 
 bool Tree::insert(Game *aGame)
 {
-    cout << "\n\n0QWNEODQWNIUXNWQIUODNCIWQIUDCQWNIUCNIUQW\n\n";
     if (root == nullptr) // If the tree is empty, we need to create a new node and set it as the root
     {
         root = new Node(aGame);
@@ -172,7 +171,6 @@ Node *Tree::findAccessRootInsert(Node *src, Node *parent, Game *aGame)
 
 bool Tree::insertHelper(Node *src, Node *parent, Game *aGame)
 {
-    cout << "\n\nInsertHelper called\n\n";
     if (src == nullptr) // Base case
     {
         src = new Node(aGame);
@@ -224,6 +222,50 @@ bool Tree::remove(const string name, const int accessibility)
         return false;
     }
     return removeHelper(nodeToRemove, name, accessibility);
+}
+
+Node *Tree::findGame(const string name, const int accessibility)
+{
+    if (!root) // Empty tree
+    {
+        cout << "Cannot find in empty tree.\n";
+        return nullptr;
+    }
+    Node *nodeToFind = findAccessRootRemove(root, nullptr, name, accessibility); // We reuse this function instead of the insert version to get access to subtree
+    if (nodeToFind == nullptr)
+    {
+        cout << "Could not find subtree for node to find.\n";
+        return nullptr;
+    }
+    Node *theGame = findGameHelper(nodeToFind, name, accessibility);
+    if (theGame == nullptr)
+    {
+        cout << "Could not find node in said accessibility subtree.\n";
+        return nullptr;
+    }
+    return theGame;
+}
+
+Node *Tree::findGameHelper(Node *src, const string name, const int accessibility)
+{
+    if (!src)
+    {
+        cout << "Could not find game of name " << name << " and accessibility " << accessibility << "\n";
+        return nullptr; // Base case, could not find node
+    }
+    if (*src->getGame() > name) // If the name is later in the alphabet, go left
+    {
+        return findGameHelper(src->getLeft(), name, accessibility);
+    }
+    else if (*src->getGame() < name) // If the name is earlier in the alphabet, go right
+    {
+        return findGameHelper(src->getRight(), name, accessibility);
+    }
+    else if (*src->getGame() == name) // If the name is the same, we have found the node to remove
+    {
+        return src;
+    }
+    return nullptr;
 }
 
 Node *Tree::findAccessRootRemove(Node *src, Node *parent, const string name, const int accessibility)

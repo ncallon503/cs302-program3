@@ -12,13 +12,19 @@
 
 using namespace std;
 
+// Exception for range of input
+class IntException : public exception
+{
+public:
+  const string errMsg() const;
+};
+
 class RangeException : public exception
 {
-  virtual const char *what() const throw()
-  {
-    return "Invalid input. For the accessibility, rating and difficulty please remember to enter an integer from 1 to 10.";
-  }
+public:
+  const string errMsg() const;
 };
+
 class Review // The review class is used to store reviews in a vector in the Game class
 {
 public:
@@ -42,6 +48,7 @@ class Game // The abstract base class Game is used for the derived classes Board
 {
 public:
   Game();
+  Game(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews); // Constructor with manual arguments
   Game(const Game &aGame);
   Game &operator=(const Game &aGame);
   virtual ~Game() = default; // Virtual destructor for derived classes to call their own destructors
@@ -78,6 +85,8 @@ protected:
 
   bool update(); // Updates average difficulty and score after a review is added
 
+  bool displayReviews(const int index) const; // Displays all reviews for a game recursively
+
   string name;            // Name of the game
   string genre;           // Genre of the game
   int accessibilityLevel; // Accessibility level of the game (1-10)
@@ -92,6 +101,7 @@ class Board : public Game // Child of Game Class
 {
 public:
   Board();
+  Board(const string name, const string genre, const int accessibility, const double score, const double difficulty, vector<Review> someReviews, const int numPlayers, const int averageTime); // Constructor with manual arguments
   Board(const Board &src);
   Board &operator=(const Board &src);
   ~Board();
@@ -100,9 +110,12 @@ public:
   bool displayDetail() const;
 
   friend ostream &operator<<(ostream &os, const Board &src);
+  friend istream &operator>>(istream &is, Board &src);
 
   Game *clone() const; // Clone used for separating memory management
 private:
+  int numPlayers;  // Recommended number of players for board game
+  int averageTime; // Average duration of how long the games last
 };
 
 // class Video : public Game // Child of Game Class
@@ -113,8 +126,8 @@ private:
 //   Video &operator=(const Video &src);
 //   ~Video();
 
-//   bool displayDetail();
-//   bool writeReview();
+//   bool displayQuick() const;
+//   bool displayDetail() const;
 
 // private:
 // };
@@ -127,8 +140,8 @@ private:
 //   Sport &operator=(const Sport &src);
 //   ~Sport();
 
-//   bool displayDetail();
-//   bool writeReview();
+//   bool displayQuick() const;
+//   bool displayDetail() const;
 
 // private:
 // };
