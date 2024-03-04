@@ -40,40 +40,40 @@ UserMenu::~UserMenu()
 
 const bool UserMenu::initializeTree()
 {
-    Board board1("Chess", "Board", 7, 8.5, 5.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70);
+    Board board1("Chess", "Board", 7, 8.5, 5.0, {Review("It is much more difficult than checkers.", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70);
     userTree.insert(&board1); // Repetitive, but I chose to insert by reference to avoid memory leaks
 
-    Board board2("Checkers", "Board", 2, 7.5, 4.0, {Review("Good game", 4.0, 4.0), Review("I like it", 4.0, 4.0)}, 2, 70);
+    Board board2("Checkers", "Board", 2, 7.5, 4.0, {Review("It's fun! Unlike Chess :) ", 4.0, 4.0), Review("I like it", 4.0, 4.0)}, 2, 70);
     userTree.insert(&board2);
 
-    Board board3("Monopoly", "Board", 2, 6.5, 3.0, {Review("Okay game", 3.0, 3.0), Review("I don't mind it", 3.0, 3.0)}, 2, 70);
+    Board board3("Monopoly", "Board", 2, 6.5, 3.0, {Review("Very fun but I lost some friendships.", 3.0, 3.0), Review("I don't mind it", 3.0, 3.0)}, 2, 70);
     userTree.insert(&board3);
 
-    Board board4("Risk", "Board", 2, 8.0, 4.5, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70);
+    Board board4("Risk", "Board", 2, 8.0, 4.5, {Review("Fun board game :)", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, 2, 70);
     userTree.insert(&board4);
 
-    Video video1("Halo", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Xbox", true);
+    Video video1("Halo", "Video", 10, 9.0, 7.0, {Review("Aliens died. Much fun.", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Xbox", true);
     userTree.insert(&video1);
 
-    Video video2("Call of Duty", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Xbox", true);
+    Video video2("Call of Duty", "Video", 10, 9.0, 7.0, {Review("My friends are mad but not my problem.", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Xbox", true);
     userTree.insert(&video2);
 
-    Video video3("League", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "PC", false);
+    Video video3("League", "Video", 10, 9.0, 7.0, {Review("Queued with my friends and was a good time.", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "PC", false);
     userTree.insert(&video3);
 
-    Video video4("Minecraft", "Video", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Universal", false);
+    Video video4("Minecraft", "Video", 10, 9.0, 7.0, {Review("We made a castle :)", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, "Universal", false);
     userTree.insert(&video4);
 
-    Sport sport1("Football", "Sport", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Cleats", "Shoulderpads", "Helmet"}, {"Quarterback", "Runningback", "Wide Receiver"});
+    Sport sport1("Football", "Sport", 10, 9.0, 7.0, {Review("Best high school experience of my life.", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Cleats", "Shoulderpads", "Helmet"}, {"Quarterback", "Runningback", "Wide Receiver"});
     userTree.insert(&sport1);
 
-    Sport sport2("Soccer", "Sport", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Cleats", "Shin Guards", "Jersey"}, {"Striker", "Midfielder", "Defender"});
+    Sport sport2("Soccer", "Sport", 10, 9.0, 7.0, {Review("It's really fun playing with my friends.", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Cleats", "Shin Guards", "Jersey"}, {"Striker", "Midfielder", "Defender"});
     userTree.insert(&sport2);
 
-    Sport sport3("Basketball", "Sport", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Sneakers", "Jersey", "Shorts"}, {"Point Guard", "Shooting Guard", "Small Forward"});
+    Sport sport3("Basketball", "Sport", 10, 9.0, 7.0, {Review("Fun playing out front of my parent's house :) ", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Sneakers", "Jersey", "Shorts"}, {"Point Guard", "Shooting Guard", "Small Forward"});
     userTree.insert(&sport3);
 
-    Sport sport4("Baseball", "Sport", 10, 9.0, 7.0, {Review("Great game", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Cleats", "Jersey", "Bat"}, {"Pitcher", "Catcher", "First Baseman"});
+    Sport sport4("Baseball", "Sport", 10, 9.0, 7.0, {Review("Baseball is fun if you are playing with your friends.", 5.0, 5.0), Review("I love it", 5.0, 5.0)}, {"Cleats", "Jersey", "Bat"}, {"Pitcher", "Catcher", "First Baseman"});
     userTree.insert(&sport4);
 
     return true;
